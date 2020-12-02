@@ -1,5 +1,4 @@
-node_mdodules/*
-node_mdodules
+node_modules
 dist
 esm
 .DS_Store
