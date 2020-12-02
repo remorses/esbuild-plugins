@@ -1,0 +1,21 @@
+{
+    "name": "package",
+    "version": "0.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "module": "esm/index.js",
+    "types": "dist/index.d.ts",
+    "repository": "https://github.com/remorses/esbuild-plugins.git",
+    "scripts": {},
+    "files": [
+        "dist",
+        "src",
+        "esm"
+    ],
+    "keywords": [],
+    "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {},
+    "dependencies": {},
+    "peerDependencies": {}
+}

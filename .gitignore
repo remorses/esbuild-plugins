@@ -1,0 +1,6 @@
+node_mdodules/*
+node_mdodules
+dist
+esm
+.DS_Store
+*.tsbuildinfo

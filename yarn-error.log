@@ -1,0 +1,36 @@
+Arguments: 
+  /Users/morse/.nvm/versions/node/v10.21.0/bin/node /Users/morse/.nvm/versions/node/v10.21.0/bin/yarn init
+
+PATH: 
+  /Users/morse/google-cloud-sdk/bin:/usr/local/opt/bison/bin:/Users/morse/.nvm/versions/node/v10.21.0/bin:/usr/local/sbin:/usr/local/opt/binutils/bin:/Users/morse/.cargo/bin:/usr/local/bin/madmom:/Users/morse/.local/bin:/Users/morse/go/bin:/Users/morse/.pyenv/shims:/Users/morse/.pyenv:/usr/local/bin/:/Users/morse/.pyenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/usr/local/go/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Applications/Wireshark.app/Contents/MacOS:/Users/morse/google-cloud-sdk/bin:/usr/local/opt/bison/bin:/Users/morse/.nvm/versions/node/v10.21.0/bin:/usr/local/sbin:/usr/local/opt/binutils/bin:/Users/morse/.cargo/bin:/usr/local/bin/madmom:/Users/morse/.local/bin:/Users/morse/go/bin:/Users/morse/.pyenv/shims:/Users/morse/.pyenv:/usr/local/bin/:yarn global bin:yarn global bin
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  10.21.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: canceled
+      at Interface.<anonymous> (/Users/morse/.nvm/versions/node/v10.21.0/lib/node_modules/yarn/lib/cli.js:136216:13)
+      at Interface.emit (events.js:198:13)
+      at Interface._ttyWrite (readline.js:801:16)
+      at ReadStream.onkeypress (readline.js:184:10)
+      at ReadStream.emit (events.js:198:13)
+      at emitKeys (internal/readline.js:424:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (readline.js:1073:36)
+      at ReadStream.emit (events.js:198:13)
+      at addChunk (_stream_readable.js:288:12)
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

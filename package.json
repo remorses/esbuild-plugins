@@ -1,0 +1,26 @@
+{
+    "name": "esbuild-plugins",
+    "scripts": {
+        "test": "NODE_ENV=test jest",
+        "watch": "npm-run-all watch:package watch:package",
+        "watch:package": "cd package && tsc -w"
+    },
+    "workspaces": {
+        "packages": [
+            "package"
+        ]
+    },
+    "devDependencies": {
+        "@changesets/cli": "^2.12.0",
+        "@sucrase/jest-plugin": "^2.0.0",
+        "@types/jest": "^26.0.16",
+        "jest": "^26.6.3",
+        "npm-run-all": "^4.1.5",
+        "typescript": "^4.1.2",
+        "ultra-runner": "^3.6.0"
+    },
+    "private": true,
+    "repository": "https://github.com/remorses/esbuild-plugins.git",
+    "author": "remorses <beats.by.morse@gmail.com>",
+    "license": "MIT"
+}
