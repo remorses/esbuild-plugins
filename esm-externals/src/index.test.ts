@@ -1,6 +1,6 @@
 import { build } from 'esbuild'
 import { writeFiles } from 'test-support'
-import NodeResolvePlugin from '.'
+import EsmExternalsPlugin from '.'
 
 require('debug').enable(require('../package.json').name)
 
@@ -20,7 +20,7 @@ test('works', async () => {
         format: 'esm',
         target: 'es2017',
         bundle: true,
-        plugins: [NodeResolvePlugin()],
+        plugins: [EsmExternalsPlugin({ externals: ['mod'] })],
     })
     unlink()
 })

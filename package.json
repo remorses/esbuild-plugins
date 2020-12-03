@@ -9,6 +9,7 @@
     "workspaces": {
         "packages": [
             "node-resolve",
+            "esm-externals",
             "test-support"
         ]
     },

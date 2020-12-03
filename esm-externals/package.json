@@ -1,5 +1,5 @@
 {
-    "name": "@esbuild-plugins/node-resolve",
+    "name": "@esbuild-plugins/esm-externals",
     "version": "0.0.0",
     "description": "",
     "main": "dist/index.js",
@@ -22,9 +22,7 @@
         "test-support": "*"
     },
     "dependencies": {
-        "builtin-modules": "^3.1.0",
-        "debug": "^4.3.1",
-        "resolve": "^1.19.0"
+        "debug": "^4.3.1"
     },
     "peerDependencies": {
         "esbuild": "*"
