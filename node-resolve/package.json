@@ -1,5 +1,5 @@
 {
-    "name": "package",
+    "name": "node-resolve",
     "version": "0.0.0",
     "description": "",
     "main": "dist/index.js",
@@ -19,6 +19,11 @@
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "devDependencies": {},
-    "dependencies": {},
-    "peerDependencies": {}
+    "dependencies": {
+        "builtin-modules": "^3.1.0",
+        "resolve": "^1.19.0"
+    },
+    "peerDependencies": {
+        "esbuild": "*"
+    }
 }
