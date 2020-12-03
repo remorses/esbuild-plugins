@@ -2,7 +2,7 @@
 
 /** @type {import('@jest/types').Config.InitialOptions} */
 const config = {
-    transform: { '.(js|jsx|tx|tsx)': '@sucrase/jest-plugin' },
+    transform: { '.(js|jsx|ts|tsx)': '@sucrase/jest-plugin' },
 }
 
 module.exports = config
