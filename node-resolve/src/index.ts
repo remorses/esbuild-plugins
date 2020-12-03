@@ -7,7 +7,7 @@ import { promisify } from 'util'
 
 const NAME = require('../package.json').name
 const debug = require('debug')(NAME)
-const NAMESPACE = 'plugin-node-resolve'
+const NAMESPACE = NAME
 
 const resolveAsync = promisify(resolve)
 

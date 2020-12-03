@@ -10,7 +10,8 @@ export async function writeFiles(graph: { [name: string]: string }) {
     const promises = Object.keys(graph).map(async (name) => {
         const p = path.resolve(base, name)
         await fs.createFile(p)
-        await fs.writeFile(p, graph[name] || '', { encoding: 'utf8' })
+        const content = (graph[name] || '') + '\n'
+        await fs.writeFile(p, content, { encoding: 'utf8' })
         return p
     })
     const paths = await Promise.all(promises)
