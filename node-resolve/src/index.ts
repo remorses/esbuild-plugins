@@ -1,10 +1,13 @@
 import { build, OnResolveArgs, Plugin } from 'esbuild'
 import path from 'path'
 import fs from 'fs'
+import { promisify } from 'util'
 import builtins from 'builtin-modules'
 import resolve from 'resolve'
 
 const NAMESPACE = 'node-resolve'
+
+const resolveAsync = promisify(resolve)
 
 export function NodeResolvePlugin(): Plugin {
     const builtinsSet = new Set(builtins)
@@ -26,11 +29,11 @@ export function NodeResolvePlugin(): Plugin {
             })
             
             
-            onResolve({ filter: /.*/ }, function resolver(args: OnResolveArgs)  {
+            onResolve({ filter: /.*/ }, async function resolver(args: OnResolveArgs)  {
                 if (builtinsSet.has(args.path)) {
                     return null
                 }
-                const resolved = resolve.sync(args.path, {
+                const resolved = await resolveAsync(args.path, {
                     basedir: args.resolveDir,
                     extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx',  '.cjs'],
                 })
@@ -51,3 +54,6 @@ export function NodeResolvePlugin(): Plugin {
         },
     }
 }
+
+
+export default NodeResolvePlugin
