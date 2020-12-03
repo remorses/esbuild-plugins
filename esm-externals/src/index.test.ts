@@ -4,6 +4,7 @@ import EsmExternalsPlugin from '.'
 
 require('debug').enable(require('../package.json').name)
 
+
 test('works', async () => {
     const {
         unlink,
