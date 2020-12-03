@@ -11,6 +11,7 @@
             "node-resolve",
             "esm-externals",
             "node-modules-polyfill",
+            "node-globals-polyfill",
             "test-support"
         ]
     },
