@@ -6,7 +6,10 @@
     "module": "esm/index.js",
     "types": "dist/index.d.ts",
     "repository": "https://github.com/remorses/esbuild-plugins.git",
-    "scripts": {},
+    "scripts": {
+        "build": "tsc && tsc -m es6 --outDir esm",
+        "watch": "tsc -w"
+    },
     "files": [
         "dist",
         "src",
