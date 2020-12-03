@@ -8,7 +8,7 @@
     },
     "workspaces": {
         "packages": [
-            "package"
+            "node-resolve"
         ]
     },
     "devDependencies": {

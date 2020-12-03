@@ -1,9 +1,9 @@
-import { build, OnResolveArgs, Plugin } from 'esbuild'
-import path from 'path'
-import fs from 'fs'
-import { promisify } from 'util'
 import builtins from 'builtin-modules'
+import { OnResolveArgs, Plugin } from 'esbuild'
+import fs from 'fs'
+import path from 'path'
 import resolve from 'resolve'
+import { promisify } from 'util'
 
 const NAMESPACE = 'node-resolve'
 
@@ -27,33 +27,41 @@ export function NodeResolvePlugin(): Plugin {
                     // errors: [{ text: resolveDir }],
                 }
             })
-            
-            
-            onResolve({ filter: /.*/ }, async function resolver(args: OnResolveArgs)  {
-                if (builtinsSet.has(args.path)) {
-                    return null
-                }
-                const resolved = await resolveAsync(args.path, {
-                    basedir: args.resolveDir,
-                    extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx',  '.cjs'],
-                })
 
-                if (!resolved) {
-                    return {
-                        external: true,
-                        errors: [{ text: 'could not resolve ' + args.path }],
+            onResolve(
+                { filter: /.*/ },
+                async function resolver(args: OnResolveArgs) {
+                    if (builtinsSet.has(args.path)) {
+                        return null
                     }
-                }
-                return {
-                    path: resolved,
-                    namespace: NAMESPACE,
-                }
-            })
+                    const resolved = await resolveAsync(args.path, {
+                        basedir: args.resolveDir,
+                        extensions: [
+                            '.ts',
+                            '.tsx',
+                            '.mjs',
+                            '.js',
+                            '.jsx',
+                            '.cjs',
+                        ],
+                    })
 
-            // onResolve({ filter: /.*/, namespace: NAMESPACE }, resolver)
+                    if (!resolved) {
+                        return {
+                            external: true,
+                            errors: [
+                                { text: 'could not resolve ' + args.path },
+                            ],
+                        }
+                    }
+                    return {
+                        path: resolved,
+                        namespace: NAMESPACE,
+                    }
+                },
+            )
         },
     }
 }
-
 
 export default NodeResolvePlugin
