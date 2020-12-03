@@ -7,17 +7,16 @@ import { promisify } from 'util'
 
 const NAME = require('../package.json').name
 const debug = require('debug')(NAME)
-const NAMESPACE = 'node-resolve'
+const NAMESPACE = 'plugin-node-resolve'
 
 const resolveAsync = promisify(resolve)
 
 export function NodeResolvePlugin(): Plugin {
     const builtinsSet = new Set(builtins)
-    
+
     return {
         name: NAME,
         setup: function setup({ onLoad, onResolve }) {
-            
             onLoad({ filter: /.*/, namespace: NAMESPACE }, async (args) => {
                 const contents = await (
                     await fs.promises.readFile(args.path)
@@ -26,7 +25,7 @@ export function NodeResolvePlugin(): Plugin {
                 // console.log({ resolveDir })
                 debug('onLoad')
                 return {
-                    loader: 'js',
+                    loader: 'default',
                     contents,
                     resolveDir,
                     // errors: [{ text: resolveDir }],
@@ -36,7 +35,6 @@ export function NodeResolvePlugin(): Plugin {
             onResolve(
                 { filter: /.*/ },
                 async function resolver(args: OnResolveArgs) {
-                    
                     if (builtinsSet.has(args.path)) {
                         return null
                     }
@@ -51,8 +49,10 @@ export function NodeResolvePlugin(): Plugin {
                             '.cjs',
                         ],
                     })
+                    debug('resolved', resolved)
 
                     if (!resolved) {
+                        debug(`not resolved ${args.path}`)
                         return {
                             external: true,
                             errors: [

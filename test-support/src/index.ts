@@ -10,7 +10,7 @@ export async function writeFiles(graph: { [name: string]: string }) {
     const promises = Object.keys(graph).map(async (name) => {
         const p = path.resolve(base, name)
         await fs.createFile(p)
-        await fs.writeFile(p, graph[name] || '')
+        await fs.writeFile(p, graph[name] || '', { encoding: 'utf8' })
         return p
     })
     const paths = await Promise.all(promises)
@@ -20,4 +20,10 @@ export async function writeFiles(graph: { [name: string]: string }) {
         })
     }
     return { unlink, paths }
+}
+
+export function randomOutputFile() {
+    const filename = v4().slice(0, 4) + '.js'
+    const outfile = path.resolve(os.tmpdir(), filename)
+    return outfile
 }

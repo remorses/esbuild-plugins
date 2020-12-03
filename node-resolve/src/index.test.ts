@@ -1,26 +1,31 @@
 import { build } from 'esbuild'
-import path from 'path'
-import { writeFiles } from 'test-support'
+import { randomOutputFile, writeFiles } from 'test-support'
 import NodeResolvePlugin from '.'
+import fs from 'fs'
 
 require('debug').enable(require('../package.json').name)
 
-build
+
 test('works', async () => {
     const {
         unlink,
         paths: [ENTRY],
     } = await writeFiles({
         'entry.js': `import {x} from './utils.js'; x;`,
-        'utils.js': `import resolve from 'resolve'; export const x = resolve('x');`,
+        'utils.js': `import resolve from 'mod'; export const x = resolve('x');`,
+        'node_modules/mod/index.js': 'export default 9',
+        'node_modules/mod/package.json': JSON.stringify({
+            name: 'resolve',
+        }),
     })
+    const outfile = randomOutputFile()
     const res = await build({
         entryPoints: [ENTRY],
-        write: false,
+        outfile,
+        // write: false,
         bundle: true,
-        format: 'esm',
         plugins: [NodeResolvePlugin()],
     })
-    console.log(res.outputFiles.map((x) => x.text))
-    unlink
+    fs.unlinkSync(outfile)
+    unlink()
 })
