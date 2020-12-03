@@ -3,7 +3,7 @@
     <br/>
     <img src='' width='320px'>
     <br/>
-    <h3>Template</h3>
+    <h3>Esbuild plugins</h3>
     <p>project under heavy development</p>
     <br/>
     <br/>
