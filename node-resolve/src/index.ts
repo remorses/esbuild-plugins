@@ -11,7 +11,9 @@ const NAMESPACE = NAME
 
 const resolveAsync = promisify(resolve)
 
-export function NodeResolvePlugin(): Plugin {
+export function NodeResolvePlugin({
+    unresolvedAreExternals = false,
+} = {}): Plugin {
     const builtinsSet = new Set(builtins)
 
     return {
@@ -32,27 +34,21 @@ export function NodeResolvePlugin(): Plugin {
                 }
             })
 
-            onResolve(
-                { filter: /.*/ },
-                async function resolver(args: OnResolveArgs) {
-                    if (builtinsSet.has(args.path)) {
-                        return null
-                    }
-                    const resolved = await resolveAsync(args.path, {
-                        basedir: args.resolveDir,
-                        extensions: [
-                            '.ts',
-                            '.tsx',
-                            '.mjs',
-                            '.js',
-                            '.jsx',
-                            '.cjs',
-                        ],
-                    })
-                    debug('resolved', resolved)
+            onResolve({ filter: /.*/ }, async function resolver(
+                args: OnResolveArgs,
+            ) {
+                if (builtinsSet.has(args.path)) {
+                    return null
+                }
+                const resolved = await resolveAsync(args.path, {
+                    basedir: args.resolveDir,
+                    extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx', '.cjs'],
+                })
+                debug('resolved', resolved)
 
-                    if (!resolved) {
-                        debug(`not resolved ${args.path}`)
+                if (!resolved) {
+                    debug(`not resolved ${args.path}`)
+                    if (unresolvedAreExternals) {
                         return {
                             external: true,
                             errors: [
@@ -60,13 +56,14 @@ export function NodeResolvePlugin(): Plugin {
                             ],
                         }
                     }
-                    debug('onResolve')
-                    return {
-                        path: resolved,
-                        namespace: NAMESPACE,
-                    }
-                },
-            )
+                    return null
+                }
+                debug('onResolve')
+                return {
+                    path: resolved,
+                    namespace: NAMESPACE,
+                }
+            })
         },
     }
 }

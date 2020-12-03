@@ -10,6 +10,7 @@
         "packages": [
             "node-resolve",
             "esm-externals",
+            "node-modules-polyfill",
             "test-support"
         ]
     },

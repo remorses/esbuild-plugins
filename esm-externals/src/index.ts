@@ -1,3 +1,4 @@
+import escapeStringRegexp from 'escape-string-regexp'
 const NAME = require('../package.json').name
 const debug = require('debug')(NAME)
 const NAMESPACE = NAME
@@ -6,7 +7,9 @@ export function EsmExternalsPlugin({ externals }: { externals: string[] }) {
     return {
         name: NAME,
         setup(build) {
-            let filter = new RegExp(externals.map(escape).join('|'))
+            const filter = new RegExp(
+                externals.map(escapeStringRegexp).join('|'),
+            )
             build.onResolve({ filter: /.*/, namespace: NAMESPACE }, (args) => {
                 return {
                     path: args.path,
@@ -26,10 +29,6 @@ export function EsmExternalsPlugin({ externals }: { externals: string[] }) {
             })
         },
     }
-}
-
-function escape(text: string) {
-    return `^${text.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}$`
 }
 
 export default EsmExternalsPlugin
