@@ -3,12 +3,14 @@ import path from 'path'
 import { writeFiles } from 'test-support'
 import NodeResolvePlugin from '.'
 
-// TODO make an util that generates some files on disk, run esbuild on those
+require('debug').enable(require('../package.json').name)
+
 
 build
 test('works', async () => {
     const [ENTRY] = await writeFiles({
-        'entry.js': `import resolve from './resolve'`,
+        'entry.js': `import './utils.js`,
+        'utils.js': `import resolve from './resolve'`
     })
     const res = await build({
         entryPoints: [ENTRY],
