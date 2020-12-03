@@ -5,20 +5,22 @@ import NodeResolvePlugin from '.'
 
 require('debug').enable(require('../package.json').name)
 
-
 build
 test('works', async () => {
-    const [ENTRY] = await writeFiles({
-        'entry.js': `import './utils.js`,
-        'utils.js': `import resolve from './resolve'`
+    const {
+        unlink,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.js': `import {x} from './utils.js'; x;`,
+        'utils.js': `import resolve from 'resolve'; export const x = resolve('x');`,
     })
     const res = await build({
         entryPoints: [ENTRY],
         write: false,
+        bundle: true,
+        format: 'esm',
         plugins: [NodeResolvePlugin()],
     })
-    res.outputFiles.find((x) => {
-        path.basename(x.path) === ENTRY
-        x.path
-    })
+    console.log(res.outputFiles.map((x) => x.text))
+    unlink
 })

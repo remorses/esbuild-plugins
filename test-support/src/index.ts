@@ -10,9 +10,14 @@ export async function writeFiles(graph: { [name: string]: string }) {
     const promises = Object.keys(graph).map(async (name) => {
         const p = path.resolve(base, name)
         await fs.createFile(p)
-        await fs.writeFile(p, graph[p] || '')
+        await fs.writeFile(p, graph[name] || '')
         return p
     })
-    const newPaths = await Promise.all(promises)
-    return newPaths
+    const paths = await Promise.all(promises)
+    function unlink() {
+        paths.forEach((x) => {
+            fs.unlinkSync(x)
+        })
+    }
+    return { unlink, paths }
 }
