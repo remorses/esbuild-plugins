@@ -13,7 +13,7 @@
 
 ## @esbuild-plugins/node-resolve
 
-Resolve files with the [resolve](https://www.npmjs.com/package/resolve) package and adds support for Yarn berry PnP
+Resolve files with the [resolve](https://www.npmjs.com/package/resolve) package and adds support for Yarn berry PnP.
 
 ```ts
 import NodeResolve from '@esbuild-plugins/node-resolve'
