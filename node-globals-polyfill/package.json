@@ -1,6 +1,6 @@
 {
     "name": "@esbuild-plugins/node-globals-polyfill",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "",
     "preferUnplugged": true,
     "main": "dist/index.js",
