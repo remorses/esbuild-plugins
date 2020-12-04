@@ -2,6 +2,7 @@
     "name": "@esbuild-plugins/node-globals-polyfill",
     "version": "0.0.1",
     "description": "",
+    "preferUnplugged": true,
     "main": "dist/index.js",
     "module": "esm/index.js",
     "types": "dist/index.d.ts",
