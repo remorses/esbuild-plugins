@@ -9,13 +9,7 @@
     <br/>
 </div>
 
-Plugins
-
--   [x] `@esbuild-plugins/node-resolve`
--   [x] `@esbuild-plugins/esm-externals`
--   [x] `@esbuild-plugins/node-modules-polyfill`
--   [x] `@esbuild-plugins/node-globals-polyfill`
--   [ ] `@esbuild-plugins/webpack-loader-adapter`
+# Plugins
 
 ## @esbuild-plugins/node-resolve
 
@@ -72,3 +66,11 @@ build({
     inject: [require.resolve('@esbuild-plugins/node-globals-polyfill/process')],
 })
 ```
+
+# Todos
+
+-   [x] `@esbuild-plugins/node-resolve`
+-   [x] `@esbuild-plugins/esm-externals`
+-   [x] `@esbuild-plugins/node-modules-polyfill`
+-   [x] `@esbuild-plugins/node-globals-polyfill`
+-   [ ] `@esbuild-plugins/webpack-loader-adapter`
