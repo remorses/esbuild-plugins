@@ -23,7 +23,6 @@ export interface NodePolyfillsOptions {
 export function NodeModulesPolyfillPlugin(
     options: NodePolyfillsOptions = {},
 ): Plugin {
-
     const polyfilledBuiltins = builtinsPolyfills(options)
     const polyfilledBuiltinsNames = [...polyfilledBuiltins.keys()]
 
@@ -31,19 +30,27 @@ export function NodeModulesPolyfillPlugin(
         name: NAME,
         setup: function setup({ onLoad, onResolve }) {
             onLoad({ filter: /.*/, namespace: NAMESPACE }, async (args) => {
-                const resolved = polyfilledBuiltins.get(
-                    removeEndingSlash(args.path),
-                )
-                const contents = await (
-                    await fs.promises.readFile(resolved)
-                ).toString()
-                let resolveDir = path.dirname(resolved)
-                // console.log({ resolveDir })
-                debug('onLoad')
-                return {
-                    loader: 'js',
-                    contents,
-                    resolveDir,
+                try {
+                    const resolved = polyfilledBuiltins.get(
+                        removeEndingSlash(args.path),
+                    )
+                    const contents = await (
+                        await fs.promises.readFile(resolved)
+                    ).toString()
+                    let resolveDir = path.dirname(resolved)
+                    // console.log({ resolveDir })
+                    debug('onLoad')
+                    return {
+                        loader: 'js',
+                        contents,
+                        resolveDir,
+                    }
+                } catch (e) {
+                    console.error('node-modules-polyfill', e)
+                    return {
+                        contents: `export {}`,
+                        loader: 'js',
+                    }
                 }
             })
             const filter = new RegExp(
@@ -51,6 +58,9 @@ export function NodeModulesPolyfillPlugin(
             )
 
             onResolve({ filter }, async function resolver(args: OnResolveArgs) {
+                if (!polyfilledBuiltins.has(args.path)) {
+                    return
+                }
                 return {
                     namespace: NAMESPACE,
                     path: args.path,

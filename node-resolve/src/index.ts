@@ -12,7 +12,7 @@ const NAMESPACE = NAME
 const resolveAsync = promisify(resolve)
 
 interface Options {
-    external?: (path: string) => boolean
+    external?: (path: string) => boolean | OnResolveResult | undefined
     onUnresolved?: (e: Error) => OnResolveResult | undefined | null | void
 }
 
@@ -69,10 +69,17 @@ export function NodeResolvePlugin({
                         }
                     }
                     debug('resolved', resolved)
-                    if (external && external(resolved)) {
+                    if (external) {
                         debug('externalizing', external)
-                        return {
-                            external: true, // TODO maybe use the ESM external trick?
+                        const res = external(resolved)
+                        if (res === true) {
+                            return {
+                                path: resolved,
+                                external: true, // TODO maybe use the ESM external trick?
+                            }
+                        }
+                        if (res) {
+                            return res
                         }
                     }
 
