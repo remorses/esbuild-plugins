@@ -1,4 +1,3 @@
-import builtins from 'builtin-modules'
 import { OnResolveArgs, Plugin } from 'esbuild'
 import escapeStringRegexp from 'escape-string-regexp'
 import fs from 'fs'
@@ -24,7 +23,6 @@ export interface NodePolyfillsOptions {
 export function NodeModulesPolyfillPlugin(
     options: NodePolyfillsOptions = {},
 ): Plugin {
-    const builtinsSet = new Set(builtins)
 
     const polyfilledBuiltins = builtinsPolyfills(options)
     const polyfilledBuiltinsNames = [...polyfilledBuiltins.keys()]
@@ -53,13 +51,10 @@ export function NodeModulesPolyfillPlugin(
             )
 
             onResolve({ filter }, async function resolver(args: OnResolveArgs) {
-                if (builtinsSet.has(args.path)) {
-                    return {
-                        namespace: NAMESPACE,
-                        path: args.path,
-                    }
+                return {
+                    namespace: NAMESPACE,
+                    path: args.path,
                 }
-                return null
             })
         },
     }
