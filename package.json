@@ -12,7 +12,8 @@
             "esm-externals",
             "node-modules-polyfill",
             "node-globals-polyfill",
-            "test-support"
+            "test-support",
+            "all"
         ]
     },
     "devDependencies": {
