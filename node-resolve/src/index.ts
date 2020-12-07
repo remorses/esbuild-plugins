@@ -11,9 +11,15 @@ const NAMESPACE = NAME
 
 const resolveAsync = promisify(resolve)
 
+interface Options {
+    external?: (path : string) => boolean
+    unresolvedAreExternals?: boolean
+}
+
 export function NodeResolvePlugin({
     unresolvedAreExternals = false,
-} = {}): Plugin {
+    external=undefined
+}: Options = {}): Plugin {
     const builtinsSet = new Set(builtins)
 
     return {
@@ -45,6 +51,12 @@ export function NodeResolvePlugin({
                     extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx', '.cjs'],
                 })
                 debug('resolved', resolved)
+                if (external && external(resolved)) {
+                    debug('externalizing', external)
+                    return {
+                        external: true // TODO maybe use the ESM external trick?
+                    }
+                }
 
                 if (!resolved) {
                     debug(`not resolved ${args.path}`)
