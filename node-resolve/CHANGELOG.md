@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-resolve
 
+## 0.0.3
+
+### Patch Changes
+
+-   691063b: Added onUnresolved callback
+
 ## 0.0.2
 
 ### Patch Changes
