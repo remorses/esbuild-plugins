@@ -22,6 +22,7 @@
         "test-support": "*"
     },
     "dependencies": {
+        "@types/resolve": "^1.17.1",
         "builtin-modules": "^3.1.0",
         "debug": "^4.3.1",
         "resolve": "^1.19.0"

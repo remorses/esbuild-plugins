@@ -2,23 +2,25 @@ import builtins from 'builtin-modules'
 import { OnResolveArgs, OnResolveResult, Plugin } from 'esbuild'
 import fs from 'fs'
 import path from 'path'
-import resolve from 'resolve'
+import resolve, {AsyncOpts} from 'resolve'
 import { promisify } from 'util'
 
 const NAME = require('../package.json').name
 const debug = require('debug')(NAME)
 const NAMESPACE = NAME
 
-const resolveAsync = promisify(resolve)
+const resolveAsync: (id: string, opts: AsyncOpts) => Promise<string | void> = promisify(resolve)
 
 interface Options {
     external?: (path: string) => boolean | OnResolveResult | undefined
     onUnresolved?: (e: Error) => OnResolveResult | undefined | null | void
+    resolveOptions?: Partial<AsyncOpts>
 }
 
 export function NodeResolvePlugin({
     external,
     onUnresolved,
+    resolveOptions,
 }: Options = {}): Plugin {
     const builtinsSet = new Set(builtins)
 
@@ -58,6 +60,7 @@ export function NodeResolvePlugin({
                                 '.jsx',
                                 '.cjs',
                             ],
+                            ...resolveOptions
                         })
                     } catch (e) {
                         if (onUnresolved) {
