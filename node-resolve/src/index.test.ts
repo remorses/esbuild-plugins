@@ -24,3 +24,47 @@ test('works', async () => {
     })
     unlink()
 })
+test('throws on unresolved', async () => {
+    const {
+        unlink,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `import {x} from 'xxx'; console.log(x);`,
+    })
+    expect(
+        build({
+            entryPoints: [ENTRY],
+            write: false,
+            bundle: true,
+            plugins: [NodeResolvePlugin()],
+        }),
+    ).rejects.toThrow()
+    unlink()
+})
+test('does not throw when onUnresolved', async () => {
+    const {
+        unlink,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `import {x} from 'xxx'; console.log(x);`,
+    })
+    let called = false
+
+    await build({
+        entryPoints: [ENTRY],
+        write: false,
+        bundle: true,
+        plugins: [
+            NodeResolvePlugin({
+                onUnresolved: () => {
+                    called = true
+                    return {
+                        external: true,
+                    }
+                },
+            }),
+        ],
+    })
+    expect(called).toBeTruthy()
+    unlink()
+})

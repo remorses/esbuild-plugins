@@ -1,5 +1,5 @@
 import builtins from 'builtin-modules'
-import { OnResolveArgs, Plugin } from 'esbuild'
+import { OnResolveArgs, OnResolveResult, Plugin } from 'esbuild'
 import fs from 'fs'
 import path from 'path'
 import resolve from 'resolve'
@@ -12,13 +12,13 @@ const NAMESPACE = NAME
 const resolveAsync = promisify(resolve)
 
 interface Options {
-    external?: (path : string) => boolean
-    unresolvedAreExternals?: boolean
+    external?: (path: string) => boolean
+    onUnresolved?: (e: Error) => OnResolveResult | undefined | null | void
 }
 
 export function NodeResolvePlugin({
-    unresolvedAreExternals = false,
-    external=undefined
+    external,
+    onUnresolved,
 }: Options = {}): Plugin {
     const builtinsSet = new Set(builtins)
 
@@ -40,42 +40,49 @@ export function NodeResolvePlugin({
                 }
             })
 
-            onResolve({ filter: /.*/ }, async function resolver(
-                args: OnResolveArgs,
-            ) {
-                if (builtinsSet.has(args.path)) {
-                    return null
-                }
-                const resolved = await resolveAsync(args.path, {
-                    basedir: args.resolveDir,
-                    extensions: ['.ts', '.tsx', '.mjs', '.js', '.jsx', '.cjs'],
-                })
-                debug('resolved', resolved)
-                if (external && external(resolved)) {
-                    debug('externalizing', external)
-                    return {
-                        external: true // TODO maybe use the ESM external trick?
+            onResolve(
+                { filter: /.*/ },
+                async function resolver(args: OnResolveArgs) {
+                    if (builtinsSet.has(args.path)) {
+                        return null
                     }
-                }
-
-                if (!resolved) {
-                    debug(`not resolved ${args.path}`)
-                    if (unresolvedAreExternals) {
-                        return {
-                            external: true,
-                            errors: [
-                                { text: 'could not resolve ' + args.path },
+                    let resolved
+                    try {
+                        resolved = await resolveAsync(args.path, {
+                            basedir: args.resolveDir,
+                            extensions: [
+                                '.ts',
+                                '.tsx',
+                                '.mjs',
+                                '.js',
+                                '.jsx',
+                                '.cjs',
                             ],
+                        })
+                    } catch (e) {
+                        if (onUnresolved) {
+                            debug(`not resolved ${args.path}`)
+                            let res = onUnresolved(e)
+                            return res || null
+                        } else {
+                            throw e
                         }
                     }
-                    return null
-                }
-                debug('onResolve')
-                return {
-                    path: resolved,
-                    namespace: NAMESPACE,
-                }
-            })
+                    debug('resolved', resolved)
+                    if (external && external(resolved)) {
+                        debug('externalizing', external)
+                        return {
+                            external: true, // TODO maybe use the ESM external trick?
+                        }
+                    }
+
+                    debug('onResolve')
+                    return {
+                        path: resolved,
+                        namespace: NAMESPACE,
+                    }
+                },
+            )
         },
     }
 }
