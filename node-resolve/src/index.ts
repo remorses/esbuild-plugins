@@ -26,7 +26,7 @@ export function NodeResolvePlugin({
     resolveOptions,
 }: Options = {}): Plugin {
     const builtinsSet = new Set(builtins)
-
+    debug('setup')
     return {
         name: NAME,
         setup: function setup({ onLoad, onResolve }) {
