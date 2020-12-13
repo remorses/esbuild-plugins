@@ -74,3 +74,4 @@ build({
 -   [x] `@esbuild-plugins/node-modules-polyfill`
 -   [x] `@esbuild-plugins/node-globals-polyfill`
 -   [ ] `@esbuild-plugins/webpack-loader-adapter`
+-   [ ] `@esbuild-plugins/html`, you can use html files as entrypoints, plugin resolves the html files to virtual js entries, plugin extracts scripts with type module, returns js made by importing these modules, loads this js to esbuild, creates the html file using the template passed from options, injects the chunks of corresponding loaded scripts back to html (found using the metafile, searching for the output files with name equal to the virtual html entries, save html files to dist
