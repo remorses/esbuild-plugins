@@ -74,12 +74,12 @@ export function NodeResolvePlugin({
                             ...resolveOptions,
                         })
                     } catch (e) {
+                        debug(`not resolved ${args.path}`)
                         if (onUnresolved) {
-                            debug(`not resolved ${args.path}`)
-                            let res = onUnresolved(e)
+                            let res = await onUnresolved(e)
                             return res || null
                         } else {
-                            throw e
+                            return null
                         }
                     }
                     debug('resolved', resolved)
