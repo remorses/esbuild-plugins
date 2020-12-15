@@ -65,7 +65,7 @@ test('multiple html scripts', async () => {
         unlink,
         paths: [ENTRY],
     } = await writeFiles({
-        'entry.html': `
+        'entrypoint.html': `
             <html>
                 <body>
                     <script src="main1.js" type="module"></script>

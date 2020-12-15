@@ -12,18 +12,6 @@ interface Options {
     emitHtml?: (arg: { path: string; html: string }) => Promise<void>
 }
 
-/*
-you can use html files as entrypoints, 
-plugin resolves the html files to virtual js entries,
-plugin extracts scripts with type module, 
-returns js made by importing these modules, 
-loads this js to esbuild, 
-creates the html file using the template passed from options, 
-find chunks using the metafile, searching for the output files with name equal to the virtual html entries, save html files to dist
-injects the chunks of corresponding loaded scripts back to html 
-
-*/
-
 export function HtmlPlugin({}: Options = {}): Plugin {
     debug('setup')
     return {
@@ -70,10 +58,9 @@ export function HtmlPlugin({}: Options = {}): Plugin {
 
                     debug('onLoad')
                     return {
-                        loader: 'js',
+                        loader: 'file',
                         contents,
                         resolveDir,
-                        // errors: [{ text: resolveDir }],
                     }
                 } catch (e) {
                     throw new Error(`Cannot load ${args.path}, ${e}`)
@@ -84,3 +71,47 @@ export function HtmlPlugin({}: Options = {}): Plugin {
 }
 
 export default HtmlPlugin
+
+// let htmlPlugin: Plugin = {
+//     name: 'example',
+//     setup({ onEmit, onLoad }) {
+//         onEmit({ filter: /\.html/ }, (args) => {
+//             const htmlPath = args.path
+//             const jsPath = args.path + '.js'
+//             const scriptSrc = '/' + path.basename(jsPath)
+//             return [
+//                 { path: jsPath, contents: args.contents },
+//                 {
+//                     path: htmlPath,
+//                     content: `
+//                     <html>
+//                         <body>
+//                             <script src="${scriptSrc}" type="module"></script>
+//                         </body>
+//                     </html>
+//                     `,
+//                 },
+//             ]
+//         })
+//         onLoad({ filter: /\.html$/ }, async (args) => {
+//             const html = await (
+//                 await fs.promises.readFile(args.path, {
+//                     encoding: 'utf-8',
+//                 })
+//             ).toString()
+
+//             const jsUrls = await getHtmlScriptsUrls(html)
+//             const contents = jsUrls
+//                 .map((importPath) => `import '${importPath}'`)
+//                 .join('\n')
+
+//             let resolveDir = path.dirname(args.path)
+
+//             return {
+//                 loader: 'js',
+//                 contents,
+//                 resolveDir,
+//             }
+//         })
+//     },
+// }
