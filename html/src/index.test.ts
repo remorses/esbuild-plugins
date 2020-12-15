@@ -32,7 +32,7 @@ const options: BuildOptions = {
     outdir: 'x',
     write: false,
     format: 'esm',
-    metafile: 'metafile.json',
+    // metafile: 'metafile.json',
     bundle: true,
     plugins: [HtmlPlugin()],
 }

@@ -8,7 +8,7 @@ import { promisify } from 'util'
 const NAME = require('../package.json').name
 const debug = require('debug')(NAME)
 
-const resolveAsync: (
+export const resolveAsync: (
     id: string,
     opts: AsyncOpts,
 ) => Promise<string | void> = promisify(resolve)

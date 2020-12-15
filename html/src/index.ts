@@ -2,12 +2,12 @@ import { Plugin } from 'esbuild'
 import fs from 'fs'
 import path from 'path'
 import { bareImportRE, getHtmlScriptsUrls } from './html'
-import { NodeResolvePlugin } from '@esbuild-plugins/node-resolve'
+import { NodeResolvePlugin, resolveAsync } from '@esbuild-plugins/node-resolve'
 const NAME = require('../package.json').name
 const debug = require('debug')(NAME)
 
 interface Options {
-    // TODO i need to know the esbuild output entrypoint to inject it into the html, 
+    // TODO i need to know the esbuild output entrypoint to inject it into the html,
     // TODO i need to emit html file but i don't know the outdir
     emitHtml?: (arg: { path: string; html: string }) => Promise<void>
 }
@@ -29,14 +29,24 @@ export function HtmlPlugin({}: Options = {}): Plugin {
     return {
         name: NAME,
         setup: function setup({ onLoad, onResolve }) {
-            NodeResolvePlugin({
-                resolveOptions: { extensions: ['.html'] },
-                namespace: null,
-            }).setup({ onResolve, onLoad() {} })
-            onLoad({ filter: /\.html$/ }, async (args) => {
+            onResolve({ filter: /\.html$/ }, async (args) => {
+                const resolved = await resolveAsync(args.path, {
+                    basedir: args.resolveDir,
+                    extensions: ['.html'],
+                }).catch(() => '')
+                if (!resolved) {
+                    return
+                }
+                return {
+                    path: resolved.replace('.html', '.html.js'),
+                    namespace: NAME,
+                }
+            })
+            onLoad({ filter: /\.html\.js$/, namespace: NAME }, async (args) => {
                 try {
+                    const realFilePath = args.path.replace('.html.js', '.html')
                     const html = await (
-                        await fs.promises.readFile(args.path, {
+                        await fs.promises.readFile(realFilePath, {
                             encoding: 'utf-8',
                         })
                     ).toString()
