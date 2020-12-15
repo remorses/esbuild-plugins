@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import os from 'os'
 import path from 'path'
+import { build, BuildResult, OutputFile } from 'esbuild'
 import { v4 } from 'uuid'
 
 export async function writeFiles(graph: { [name: string]: string }) {
@@ -27,4 +28,11 @@ export function randomOutputFile() {
     const filename = v4().slice(0, 4) + '.js'
     const outfile = path.resolve(os.tmpdir(), filename)
     return outfile
+}
+
+export function formatEsbuildOutput(res: { outputFiles?: OutputFile[] }) {
+    if (!res?.outputFiles?.length) {
+        return 'No outputs!'
+    }
+    return res.outputFiles.map((x) => x.path + ':\n' + x.text).join(`\n---\n`)
 }

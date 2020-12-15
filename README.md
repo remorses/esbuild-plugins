@@ -19,8 +19,6 @@ Resolve files with the [resolve](https://www.npmjs.com/package/resolve) package 
 import NodeResolve from '@esbuild-plugins/node-resolve'
 import { build } from 'esbuild'
 build({
-    // ...
-    // Adds support for Yarn berry PnP
     plugins: [NodeResolve()],
 })
 ```
@@ -33,8 +31,6 @@ Makes some packages externals and forces the output to be valid ESM
 import EsmExternals from '@esbuild-plugins/esm-externals'
 import { build } from 'esbuild'
 build({
-    // ...
-    // all calls to `require('react') will be converted to ESM valid imports
     plugins: [EsmExternals({ externals: ['react', 'react-dom'] })],
 })
 ```
@@ -47,8 +43,6 @@ Polyfills nodejs builtin modules for the browser
 import NodeModulesPolyfills from '@esbuild-plugins/node-modules-polyfill'
 import { build } from 'esbuild'
 build({
-    // ...
-    // you can now import modules from nodejs builtins like `path`
     plugins: [NodeModulesPolyfills()],
 })
 ```
@@ -61,8 +55,6 @@ Polyfills nodejs globals like `process`
 import EsmExternals from '@esbuild-plugins/node-globals-polyfill'
 import { build } from 'esbuild'
 build({
-    // ...
-    // Allows you to use nodejs `process` global variable
     inject: [require.resolve('@esbuild-plugins/node-globals-polyfill/process')],
 })
 ```
@@ -74,4 +66,4 @@ build({
 -   [x] `@esbuild-plugins/node-modules-polyfill`
 -   [x] `@esbuild-plugins/node-globals-polyfill`
 -   [ ] `@esbuild-plugins/webpack-loader-adapter`
--   [ ] `@esbuild-plugins/html`, you can use html files as entrypoints, plugin resolves the html files to virtual js entries, plugin extracts scripts with type module, returns js made by importing these modules, loads this js to esbuild, creates the html file using the template passed from options, injects the chunks of corresponding loaded scripts back to html (found using the metafile, searching for the output files with name equal to the virtual html entries, save html files to dist
+-   [ ] `@esbuild-plugins/html`,

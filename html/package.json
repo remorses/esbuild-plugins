@@ -1,5 +1,5 @@
 {
-    "name": "@esbuild-plugins/node-resolve",
+    "name": "@esbuild-plugins/html",
     "version": "0.0.3",
     "description": "",
     "main": "dist/index.js",
@@ -22,9 +22,9 @@
         "test-support": "*"
     },
     "dependencies": {
-        "@types/resolve": "^1.17.1",
         "debug": "^4.3.1",
-        "resolve": "^1.19.0"
+        "@esbuild-plugins/node-resolve": "*",
+        "posthtml": "^0.15.1"
     },
     "peerDependencies": {
         "esbuild": "*"

@@ -1,13 +1,12 @@
-import builtins from 'builtin-modules'
 import { OnResolveArgs, OnResolveResult, Plugin } from 'esbuild'
 import fs from 'fs'
+import { builtinModules as builtins } from 'module'
 import path from 'path'
 import resolve, { AsyncOpts } from 'resolve'
 import { promisify } from 'util'
 
 const NAME = require('../package.json').name
 const debug = require('debug')(NAME)
-const NAMESPACE = NAME
 
 const resolveAsync: (
     id: string,
@@ -15,6 +14,7 @@ const resolveAsync: (
 ) => Promise<string | void> = promisify(resolve)
 
 interface Options {
+    namespace?: string | null | undefined
     external?: (path: string) => boolean | OnResolveResult | undefined
     onUnresolved?: (e: Error) => OnResolveResult | undefined | null | void
     onResolved?: (p: string) => Promise<any> | any
@@ -24,15 +24,26 @@ interface Options {
 export function NodeResolvePlugin({
     external,
     onUnresolved,
+    namespace: _namespace,
     onResolved,
     resolveOptions,
 }: Options = {}): Plugin {
     const builtinsSet = new Set(builtins)
+    let namespace
+    if (_namespace === null) {
+        namespace = undefined
+    }
+    if (_namespace === undefined) {
+        namespace = NAME
+    }
+    if (_namespace) {
+        namespace = _namespace
+    }
     debug('setup')
     return {
         name: NAME,
         setup: function setup({ onLoad, onResolve }) {
-            onLoad({ filter: /.*/, namespace: NAMESPACE }, async (args) => {
+            onLoad({ filter: /.*/, namespace }, async (args) => {
                 try {
                     const contents = await (
                         await fs.promises.readFile(args.path, {
@@ -82,20 +93,20 @@ export function NodeResolvePlugin({
                             return null
                         }
                     }
-                    debug('resolved', resolved)
+                    debug(`resolved '${resolved}'`)
                     if (resolved && onResolved) {
                         const res = await onResolved(resolved)
                         if (typeof res === 'string') {
                             return {
                                 path: res,
-                                namespace: NAMESPACE,
+                                namespace,
                             }
                         }
                         if (res?.path) {
                             return res
                         }
                     }
-                    
+
                     // TODO remove external, external can be expressed with onResolved
                     if (external) {
                         debug('externalizing', external)
@@ -114,7 +125,7 @@ export function NodeResolvePlugin({
                     debug('onResolve')
                     return {
                         path: resolved,
-                        namespace: NAMESPACE,
+                        namespace,
                     }
                 },
             )
