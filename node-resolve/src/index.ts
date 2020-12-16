@@ -15,14 +15,12 @@ export const resolveAsync: (
 
 interface Options {
     namespace?: string | undefined
-    external?: (path: string) => boolean | OnResolveResult | undefined
     onUnresolved?: (e: Error) => OnResolveResult | undefined | null | void
     onResolved?: (p: string) => Promise<any> | any
     resolveOptions?: Partial<AsyncOpts>
 }
 
 export function NodeResolvePlugin({
-    external,
     onUnresolved,
     namespace,
     onResolved,
