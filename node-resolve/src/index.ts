@@ -58,7 +58,7 @@ export function NodeResolvePlugin({
                     try {
                         resolved = await resolveAsync(args.path, {
                             basedir: args.resolveDir,
-                            preserveSymlinks: false,
+                            preserveSymlinks: true,
                             extensions: [
                                 '.ts',
                                 '.tsx',
