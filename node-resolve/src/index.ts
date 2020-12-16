@@ -33,6 +33,9 @@ export function NodeResolvePlugin({
         setup: function setup({ onLoad, onResolve }) {
             onLoad({ filter: /.*/, namespace }, async (args) => {
                 try {
+                    if (builtinsSet.has(args.path)) {
+                        return
+                    }
                     const contents = await (
                         await fs.promises.readFile(args.path)
                     ).toString()
@@ -44,6 +47,7 @@ export function NodeResolvePlugin({
                         resolveDir,
                     }
                 } catch (e) {
+                    return null
                     throw new Error(`Cannot load ${args.path}, ${e}`)
                 }
             })
