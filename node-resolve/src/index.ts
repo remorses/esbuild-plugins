@@ -14,7 +14,7 @@ export const resolveAsync: (
 ) => Promise<string | void> = promisify(resolve)
 
 interface Options {
-    namespace?: string | null | undefined
+    namespace?: string | undefined
     external?: (path: string) => boolean | OnResolveResult | undefined
     onUnresolved?: (e: Error) => OnResolveResult | undefined | null | void
     onResolved?: (p: string) => Promise<any> | any
@@ -24,21 +24,11 @@ interface Options {
 export function NodeResolvePlugin({
     external,
     onUnresolved,
-    namespace: _namespace,
+    namespace,
     onResolved,
     resolveOptions,
 }: Options = {}): Plugin {
     const builtinsSet = new Set(builtins)
-    let namespace
-    if (_namespace === null) {
-        namespace = undefined
-    }
-    // if (_namespace === undefined) {
-    //     namespace = NAME
-    // }
-    if (_namespace) {
-        namespace = _namespace
-    }
     debug('setup')
     return {
         name: NAME,
