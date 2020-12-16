@@ -27,10 +27,9 @@ export function HtmlPlugin({}: Options = {}): Plugin {
                 }
                 return {
                     path: resolved.replace('.html', '.html.js'),
-                    namespace: NAME,
                 }
             })
-            onLoad({ filter: /\.html\.js$/, namespace: NAME }, async (args) => {
+            onLoad({ filter: /\.html\.js$/ }, async (args) => {
                 try {
                     const realFilePath = args.path.replace('.html.js', '.html')
                     const html = await (

@@ -33,9 +33,9 @@ export function NodeResolvePlugin({
     if (_namespace === null) {
         namespace = undefined
     }
-    if (_namespace === undefined) {
-        namespace = NAME
-    }
+    // if (_namespace === undefined) {
+    //     namespace = NAME
+    // }
     if (_namespace) {
         namespace = _namespace
     }
@@ -46,18 +46,14 @@ export function NodeResolvePlugin({
             onLoad({ filter: /.*/, namespace }, async (args) => {
                 try {
                     const contents = await (
-                        await fs.promises.readFile(args.path, {
-                            encoding: 'utf-8',
-                        })
+                        await fs.promises.readFile(args.path)
                     ).toString()
                     let resolveDir = path.dirname(args.path)
-                    // console.log({ resolveDir })
                     debug('onLoad')
                     return {
                         loader: 'default',
                         contents,
                         resolveDir,
-                        // errors: [{ text: resolveDir }],
                     }
                 } catch (e) {
                     throw new Error(`Cannot load ${args.path}, ${e}`)
@@ -74,6 +70,7 @@ export function NodeResolvePlugin({
                     try {
                         resolved = await resolveAsync(args.path, {
                             basedir: args.resolveDir,
+                            preserveSymlinks: false,
                             extensions: [
                                 '.ts',
                                 '.tsx',
@@ -93,6 +90,7 @@ export function NodeResolvePlugin({
                             return null
                         }
                     }
+                    // resolved = path.relative(resolved, process.cwd())
                     debug(`resolved '${resolved}'`)
                     if (resolved && onResolved) {
                         const res = await onResolved(resolved)
@@ -103,21 +101,6 @@ export function NodeResolvePlugin({
                             }
                         }
                         if (res?.path) {
-                            return res
-                        }
-                    }
-
-                    // TODO remove external, external can be expressed with onResolved
-                    if (external) {
-                        debug('externalizing', external)
-                        const res = external(resolved)
-                        if (res === true) {
-                            return {
-                                path: resolved,
-                                external: true, // TODO maybe use the ESM external trick?
-                            }
-                        }
-                        if (res) {
                             return res
                         }
                     }
