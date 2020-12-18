@@ -57,7 +57,7 @@ export function HtmlPlugin({}: Options = {}): Plugin {
 
                     debug('onLoad')
                     return {
-                        loader: 'file',
+                        loader: 'js',
                         contents,
                         resolveDir,
                     }

@@ -1,4 +1,5 @@
 import { OnResolveArgs, OnResolveResult, Plugin } from 'esbuild'
+import escapeStringRegexp from 'escape-string-regexp'
 import fs from 'fs'
 import { builtinModules as builtins } from 'module'
 import path from 'path'
@@ -14,6 +15,9 @@ export const resolveAsync: (
 ) => Promise<string | void> = promisify(resolve)
 
 interface Options {
+    // extensions is required to not implicitly fail on .json and other complex scenarios like .mjs
+    name?: string
+    extensions: string[]
     namespace?: string | undefined
     onUnresolved?: (e: Error) => OnResolveResult | undefined | null | void
     onResolved?: (p: string) => Promise<any> | any
@@ -23,15 +27,20 @@ interface Options {
 export function NodeResolvePlugin({
     onUnresolved,
     namespace,
+    extensions,
     onResolved,
     resolveOptions,
-}: Options = {}): Plugin {
+    name = NAME,
+}: Options): Plugin {
     const builtinsSet = new Set(builtins)
     debug('setup')
+    const filter = new RegExp(
+        '(' + extensions.map(escapeStringRegexp).join('|') + ')$',
+    )
     return {
-        name: NAME,
+        name,
         setup: function setup({ onLoad, onResolve }) {
-            onLoad({ filter: /.*/, namespace }, async (args) => {
+            onLoad({ filter, namespace }, async (args) => {
                 try {
                     if (builtinsSet.has(args.path)) {
                         return
@@ -63,14 +72,7 @@ export function NodeResolvePlugin({
                         resolved = await resolveAsync(args.path, {
                             basedir: args.resolveDir,
                             preserveSymlinks: true,
-                            extensions: [
-                                '.ts',
-                                '.tsx',
-                                '.mjs',
-                                '.js',
-                                '.jsx',
-                                '.cjs',
-                            ],
+                            extensions,
                             ...resolveOptions,
                         })
                     } catch (e) {
