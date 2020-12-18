@@ -14,6 +14,7 @@
             "node-globals-polyfill",
             "html",
             "test-support",
+            "tsconfig-paths",
             "all"
         ]
     },

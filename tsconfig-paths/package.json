@@ -1,0 +1,33 @@
+{
+    "name": "@esbuild-plugins/tsconfig-paths",
+    "version": "0.0.3",
+    "description": "",
+    "main": "dist/index.js",
+    "module": "esm/index.js",
+    "types": "dist/index.d.ts",
+    "repository": "https://github.com/remorses/esbuild-plugins.git",
+    "scripts": {
+        "build": "tsc && tsc -m es6 --outDir esm",
+        "watch": "tsc -w"
+    },
+    "files": [
+        "dist",
+        "src",
+        "esm"
+    ],
+    "keywords": [],
+    "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "test-support": "*"
+    },
+    "dependencies": {
+        "debug": "^4.3.1",
+        "find-up": "^5.0.0",
+        "strip-json-comments": "^3.1.1"
+    },
+    "peerDependencies": {
+        "esbuild": "*",
+        "typescript": "*"
+    }
+}

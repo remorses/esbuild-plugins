@@ -11,6 +11,14 @@
 
 # Plugins
 
+-   [x] `@esbuild-plugins/node-resolve`
+-   [x] `@esbuild-plugins/esm-externals`
+-   [x] `@esbuild-plugins/node-modules-polyfill`
+-   [x] `@esbuild-plugins/node-globals-polyfill`
+-   [x] `@esbuild-plugins/tsconfig-paths`
+-   [ ] `@esbuild-plugins/webpack-loader-adapter`
+-   [ ] `@esbuild-plugins/html`
+
 ## @esbuild-plugins/node-resolve
 
 Resolve files with the [resolve](https://www.npmjs.com/package/resolve) package and adds support for Yarn berry PnP.
@@ -58,12 +66,3 @@ build({
     inject: [require.resolve('@esbuild-plugins/node-globals-polyfill/process')],
 })
 ```
-
-# Todos
-
--   [x] `@esbuild-plugins/node-resolve`
--   [x] `@esbuild-plugins/esm-externals`
--   [x] `@esbuild-plugins/node-modules-polyfill`
--   [x] `@esbuild-plugins/node-globals-polyfill`
--   [ ] `@esbuild-plugins/webpack-loader-adapter`
--   [ ] `@esbuild-plugins/html`,
