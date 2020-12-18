@@ -24,6 +24,14 @@ interface Options {
     resolveOptions?: Partial<AsyncOpts>
 }
 
+let isUsingYarnPnp = false
+
+try {
+    require('pnpapi')
+    console.log('Using Yarn PnP resolver')
+    isUsingYarnPnp = true
+} catch {}
+
 export function NodeResolvePlugin({
     onUnresolved,
     namespace,
@@ -71,7 +79,7 @@ export function NodeResolvePlugin({
                     try {
                         resolved = await resolveAsync(args.path, {
                             basedir: args.resolveDir,
-                            preserveSymlinks: true,
+                            preserveSymlinks: isUsingYarnPnp,
                             extensions,
                             ...resolveOptions,
                         })
