@@ -85,13 +85,17 @@ export function NodeResolvePlugin({
                         extensions,
                         packageFilter: (packageJSON) => {
                             if (!mainFields?.length) {
-                                return
+                                return packageJSON
                             }
                             // changes the main field to be another field
                             for (let mainField of mainFields) {
-                                if (packageJSON[mainField]) {
+                                if (mainField === 'main') {
+                                    break
+                                }
+                                const newMain = packageJSON[mainField]
+                                if (newMain && typeof newMain === 'string') {
                                     debug(`set main to '${mainField}`)
-                                    packageJSON['main'] = packageJSON[mainField]
+                                    packageJSON['main'] = newMain
                                     break
                                 }
                             }
