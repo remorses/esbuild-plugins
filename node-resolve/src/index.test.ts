@@ -26,6 +26,7 @@ test('works', async () => {
         bundle: true,
         plugins: [
             NodeResolvePlugin({
+                extensions: ['.js', '.ts'],
                 onUnresolved: (e) => {
                     throw e
                 },
@@ -39,7 +40,7 @@ test('works', async () => {
     })
     expect(called).toBe(3)
     const expected = ['entry.ts', 'utils.ts', 'node_modules/mod/index.js']
-    expect(resolved.map((x) => slash(path.relative(base, x)))).toEqual(expected)
+    expect(resolved.map(normalize(base))).toEqual(expected)
     unlink()
 })
 
@@ -58,6 +59,7 @@ test('does not throw when onUnresolved', async () => {
         bundle: true,
         plugins: [
             NodeResolvePlugin({
+                extensions: ['.js', '.ts'],
                 onUnresolved: () => {
                     called = true
                     return {
@@ -70,3 +72,46 @@ test('does not throw when onUnresolved', async () => {
     expect(called).toBeTruthy()
     unlink()
 })
+
+test('uses mainFields option', async () => {
+    const {
+        unlink,
+        base,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'main.ts': `import mod from 'mod'; export const x = mod('x');`,
+        'node_modules/mod/module.js': 'export default () => {}',
+        'node_modules/mod/package.json': JSON.stringify({
+            name: 'mod',
+            version: '0.0.0',
+            module: 'module.js',
+            main: 'module.js',
+        }),
+    })
+    let resolved: string[] = []
+
+    await build({
+        entryPoints: [ENTRY],
+        write: false,
+        bundle: true,
+        plugins: [
+            NodeResolvePlugin({
+                extensions: ['.js', '.ts', '.json'],
+                mainFields: ['module', 'main'],
+                onUnresolved: (e) => {
+                    throw e
+                },
+                onResolved(p) {
+                    resolved.push(p)
+                },
+            }),
+        ],
+    })
+    expect(resolved.map(normalize(base))).toEqual([
+        'main.ts',
+        'node_modules/mod/module.js',
+    ])
+    unlink()
+})
+
+const normalize = (base) => (x) => slash(path.relative(base, x))

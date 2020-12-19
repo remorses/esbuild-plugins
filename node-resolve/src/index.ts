@@ -17,6 +17,7 @@ export const resolveAsync: (
 interface Options {
     // extensions is required to not implicitly fail on .json and other complex scenarios like .mjs
     name?: string
+    mainFields?: string[]
     extensions: string[]
     namespace?: string | undefined
     onUnresolved?: (e: Error) => OnResolveResult | undefined | null | void
@@ -38,6 +39,7 @@ export function NodeResolvePlugin({
     extensions,
     onResolved,
     resolveOptions,
+    mainFields,
     name = NAME,
 }: Options): Plugin {
     const builtinsSet = new Set(builtins)
@@ -69,51 +71,64 @@ export function NodeResolvePlugin({
                 }
             })
 
-            onResolve(
-                { filter: /.*/ },
-                async function resolver(args: OnResolveArgs) {
-                    if (builtinsSet.has(args.path)) {
+            onResolve({ filter: /.*/ }, async function resolver(
+                args: OnResolveArgs,
+            ) {
+                if (builtinsSet.has(args.path)) {
+                    return null
+                }
+                let resolved
+                try {
+                    resolved = await resolveAsync(args.path, {
+                        basedir: args.resolveDir,
+                        preserveSymlinks: isUsingYarnPnp,
+                        extensions,
+                        packageFilter: (packageJSON) => {
+                            if (!mainFields?.length) {
+                                return
+                            }
+                            // changes the main field to be another field
+                            for (let mainField of mainFields) {
+                                if (packageJSON[mainField]) {
+                                    debug(`set main to '${mainField}`)
+                                    packageJSON['main'] = packageJSON[mainField]
+                                    break
+                                }
+                            }
+                            return packageJSON
+                        },
+                        ...resolveOptions,
+                    })
+                } catch (e) {
+                    debug(`not resolved ${args.path}`)
+                    if (onUnresolved) {
+                        let res = await onUnresolved(e)
+                        return res || null
+                    } else {
                         return null
                     }
-                    let resolved
-                    try {
-                        resolved = await resolveAsync(args.path, {
-                            basedir: args.resolveDir,
-                            preserveSymlinks: isUsingYarnPnp,
-                            extensions,
-                            ...resolveOptions,
-                        })
-                    } catch (e) {
-                        debug(`not resolved ${args.path}`)
-                        if (onUnresolved) {
-                            let res = await onUnresolved(e)
-                            return res || null
-                        } else {
-                            return null
+                }
+                // resolved = path.relative(resolved, process.cwd())
+                debug(`resolved '${resolved}'`)
+                if (resolved && onResolved) {
+                    const res = await onResolved(resolved)
+                    if (typeof res === 'string') {
+                        return {
+                            path: res,
+                            namespace,
                         }
                     }
-                    // resolved = path.relative(resolved, process.cwd())
-                    debug(`resolved '${resolved}'`)
-                    if (resolved && onResolved) {
-                        const res = await onResolved(resolved)
-                        if (typeof res === 'string') {
-                            return {
-                                path: res,
-                                namespace,
-                            }
-                        }
-                        if (res?.path) {
-                            return res
-                        }
+                    if (res?.path) {
+                        return res
                     }
+                }
 
-                    debug('onResolve')
-                    return {
-                        path: resolved,
-                        namespace,
-                    }
-                },
-            )
+                debug('onResolve')
+                return {
+                    path: resolved,
+                    namespace,
+                }
+            })
         },
     }
 }
