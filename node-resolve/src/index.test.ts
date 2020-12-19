@@ -27,8 +27,8 @@ test('works', async () => {
         plugins: [
             NodeResolvePlugin({
                 extensions: ['.js', '.ts'],
-                onUnresolved: (e) => {
-                    throw e
+                onNonResolved: (p) => {
+                    throw new Error(`cannot resolve ${p}`)
                 },
                 onResolved: (x) => {
                     resolved.push(x)
@@ -60,7 +60,7 @@ test('does not throw when onUnresolved', async () => {
         plugins: [
             NodeResolvePlugin({
                 extensions: ['.js', '.ts'],
-                onUnresolved: () => {
+                onNonResolved: () => {
                     called = true
                     return {
                         external: true,
@@ -98,8 +98,8 @@ test('uses mainFields option', async () => {
             NodeResolvePlugin({
                 extensions: ['.js', '.ts', '.json'],
                 mainFields: ['module', 'main'],
-                onUnresolved: (e) => {
-                    throw e
+                onNonResolved: (p) => {
+                    throw new Error(`cannot resolve ${p}`)
                 },
                 onResolved(p) {
                     resolved.push(p)

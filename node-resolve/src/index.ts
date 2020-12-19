@@ -20,7 +20,7 @@ interface Options {
     mainFields?: string[]
     extensions: string[]
     namespace?: string | undefined
-    onUnresolved?: (e: Error) => OnResolveResult | undefined | null | void
+    onNonResolved?: (id: string) => OnResolveResult | undefined | null | void
     onResolved?: (p: string) => Promise<any> | any
     resolveOptions?: Partial<AsyncOpts>
 }
@@ -34,7 +34,7 @@ try {
 } catch {}
 
 export function NodeResolvePlugin({
-    onUnresolved,
+    onNonResolved: onUnresolved,
     namespace,
     extensions,
     onResolved,
