@@ -29,11 +29,12 @@ require('debug').enable(require('../package.json').name)
 // })
 
 const options: BuildOptions = {
-    outdir: 'x',
+    outdir: 'out',
     write: false,
     format: 'esm',
     // metafile: 'metafile.json',
     bundle: true,
+    splitting: true,
     plugins: [HtmlPlugin()],
 }
 test('works', async () => {
@@ -60,6 +61,38 @@ test('works', async () => {
     console.log(formatEsbuildOutput(res))
     unlink()
 })
+
+test('multiple entries', async () => {
+    const { unlink, paths } = await writeFiles({
+        '1.html': `
+            <html>
+                <body>
+                    <script src="main1.js" type="module"></script>
+                </body>
+            </html>
+        `,
+        '2.html': `
+            <html>
+                <body>
+                    <script src="main2.js" type="module"></script>
+                </body>
+            </html>
+        `,
+        'main1.js': `import './file1.css'; console.log('x'); export const x = 9`,
+        'main2.js': `import './file1.css'; import './file2.css'; console.log('x');`,
+        'file1.css': `body { background: red; }`,
+        'file2.css': `body { background: red; }`,
+    })
+    // const outfile = randomOutputFile()
+    const res = await build({
+        entryPoints: paths.slice(0, 2),
+        // metafile: 'meta',
+        ...options,
+    })
+    console.log('multiple entries', formatEsbuildOutput(res))
+    unlink()
+})
+
 test('multiple html scripts', async () => {
     const {
         unlink,

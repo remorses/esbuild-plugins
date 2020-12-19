@@ -9,13 +9,13 @@ const debug = require('debug')(NAME)
 interface Options {
     // TODO i need to know the esbuild output entrypoint to inject it into the html,
     // TODO i need to emit html file but i don't know the outdir
+    name?: string
     emitHtml?: (arg: { path: string; html: string }) => Promise<void>
 }
-
-export function HtmlPlugin({}: Options = {}): Plugin {
+export function HtmlPlugin({ name = NAME }: Options = {}): Plugin {
     debug('setup')
     return {
-        name: NAME,
+        name,
         setup: function setup({ onLoad, onResolve }) {
             onResolve({ filter: /\.html$/ }, async (args) => {
                 const resolved = await resolveAsync(args.path, {
@@ -29,6 +29,7 @@ export function HtmlPlugin({}: Options = {}): Plugin {
                     path: resolved.replace('.html', '.html.js'),
                 }
             })
+
             onLoad({ filter: /\.html\.js$/ }, async (args) => {
                 try {
                     const realFilePath = args.path.replace('.html.js', '.html')
@@ -50,7 +51,7 @@ export function HtmlPlugin({}: Options = {}): Plugin {
                             }
                             return importPath
                         })
-                        .map((importPath) => `import '${importPath}'`)
+                        .map((importPath) => `export * from '${importPath}'`)
                         .join('\n')
 
                     let resolveDir = path.dirname(args.path)
