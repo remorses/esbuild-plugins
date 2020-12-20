@@ -59,12 +59,14 @@ export function HtmlIngestPlugin({
 
                     const contents = jsUrls
                         .map((importPath) => {
+                            // src='/file.js' -> ../../file.js
                             if (importPath.startsWith('/')) {
                                 importPath = path.posix.join(
                                     pathToRoot,
                                     '.' + importPath,
                                 )
                             }
+                            // src='file.js' -> ./file.js
                             if (bareImportRE.test(importPath)) {
                                 importPath = './' + importPath
                             }
