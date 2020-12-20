@@ -10,9 +10,19 @@ interface Options {
     // TODO i need to know the esbuild output entrypoint to inject it into the html,
     // TODO i need to emit html file but i don't know the outdir
     name?: string
-    emitHtml?: (arg: { path: string; html: string }) => Promise<void>
+    root: string // to resolve paths in case the html page is not in root
+    transformImportPath?: (importPath?: string) => string
+    // emitHtml?: (arg: { path: string; html: string }) => Promise<void>
 }
-export function HtmlPlugin({ name = NAME }: Options = {}): Plugin {
+
+/**
+ * Let you use html files as entrypoints for esbuild
+ */
+export function HtmlIngestPlugin({
+    name = NAME,
+    root,
+    transformImportPath,
+}: Options): Plugin {
     debug('setup')
     return {
         name,
@@ -26,13 +36,13 @@ export function HtmlPlugin({ name = NAME }: Options = {}): Plugin {
                     return
                 }
                 return {
-                    path: resolved.replace('.html', '.html.js'),
+                    path: resolved, // .replace('.html', '.html.js'),
                 }
             })
 
-            onLoad({ filter: /\.html\.js$/ }, async (args) => {
+            onLoad({ filter: /\.html$/ }, async (args) => {
                 try {
-                    const realFilePath = args.path.replace('.html.js', '.html')
+                    const realFilePath = args.path // .replace('.html.js', '.html')
                     const html = await (
                         await fs.promises.readFile(realFilePath, {
                             encoding: 'utf-8',
@@ -41,16 +51,29 @@ export function HtmlPlugin({ name = NAME }: Options = {}): Plugin {
 
                     const jsUrls = await getHtmlScriptsUrls(html)
 
+                    // const folder = path.relative(root, path.dirname(args.path))
+                    const pathToRoot = path.relative(
+                        path.dirname(args.path),
+                        root,
+                    )
+
                     const contents = jsUrls
                         .map((importPath) => {
                             if (importPath.startsWith('/')) {
-                                importPath = '.' + importPath
+                                importPath = path.posix.join(
+                                    pathToRoot,
+                                    '.' + importPath,
+                                )
                             }
                             if (bareImportRE.test(importPath)) {
                                 importPath = './' + importPath
                             }
+
                             return importPath
                         })
+                        .map((x) =>
+                            transformImportPath ? transformImportPath(x) : x,
+                        )
                         .map((importPath) => `export * from '${importPath}'`)
                         .join('\n')
 
@@ -69,8 +92,6 @@ export function HtmlPlugin({ name = NAME }: Options = {}): Plugin {
         },
     }
 }
-
-export default HtmlPlugin
 
 // let htmlPlugin: Plugin = {
 //     name: 'example',

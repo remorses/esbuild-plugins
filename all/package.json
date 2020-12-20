@@ -20,6 +20,7 @@
     "license": "ISC",
     "dependencies": {
         "@esbuild-plugins/node-resolve": "*",
+        "@esbuild-plugins/html": "*",
         "@esbuild-plugins/esm-externals": "*",
         "@esbuild-plugins/node-modules-polyfill": "*",
         "@esbuild-plugins/node-globals-polyfill": "*"
