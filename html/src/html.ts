@@ -6,7 +6,9 @@ export async function getHtmlScriptsUrls(html: string) {
         async (tree) => {
             tree.walk((node) => {
                 if (
+                    node &&
                     node.tag === 'script' &&
+                    node.attrs &&
                     node.attrs['type'] === 'module' &&
                     node.attrs['src'] &&
                     isRelative(node.attrs['src'])
