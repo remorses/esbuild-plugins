@@ -55,9 +55,7 @@ export function NodeResolvePlugin({
                     if (builtinsSet.has(args.path)) {
                         return
                     }
-                    const contents = await (
-                        await fs.promises.readFile(args.path)
-                    ).toString()
+                    const contents = await fs.promises.readFile(args.path) // do not convert to string to support images and other assets
                     let resolveDir = path.dirname(args.path)
                     debug('onLoad')
                     return {

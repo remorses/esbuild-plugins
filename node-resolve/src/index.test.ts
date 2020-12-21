@@ -1,5 +1,5 @@
 import { build } from 'esbuild'
-import { writeFiles } from 'test-support'
+import { writeFiles, formatEsbuildOutput } from 'test-support'
 import NodeResolvePlugin from '.'
 import slash from 'slash'
 import path from 'path'
@@ -42,6 +42,7 @@ test('works', async () => {
     const expected = ['entry.ts', 'utils.ts', 'node_modules/mod/index.js']
     expect(resolved.map(normalize(base))).toEqual(expected)
     unlink()
+    // console.log(formatEsbuildOutput(res))
 })
 
 test('does not throw when onUnresolved', async () => {
