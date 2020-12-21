@@ -1,6 +1,6 @@
 import { build, BuildOptions } from 'esbuild'
 import { formatEsbuildOutput, writeFiles } from 'test-support'
-import HtmlPlugin from '.'
+import { HtmlIngestPlugin } from '.'
 
 require('debug').enable(require('../package.json').name)
 
@@ -35,11 +35,11 @@ const options: BuildOptions = {
     // metafile: 'metafile.json',
     bundle: true,
     splitting: true,
-    plugins: [HtmlPlugin()],
 }
 test('works', async () => {
     const {
         unlink,
+        base,
         paths: [ENTRY],
     } = await writeFiles({
         'entry.html': `
@@ -56,6 +56,7 @@ test('works', async () => {
     // const outfile = randomOutputFile()
     const res = await build({
         entryPoints: [ENTRY],
+        plugins: [HtmlIngestPlugin({ root: base })],
         ...options,
     })
     console.log(formatEsbuildOutput(res))
@@ -63,7 +64,7 @@ test('works', async () => {
 })
 
 test('multiple entries', async () => {
-    const { unlink, paths } = await writeFiles({
+    const { unlink, paths, base } = await writeFiles({
         '1.html': `
             <html>
                 <body>
@@ -86,6 +87,7 @@ test('multiple entries', async () => {
     // const outfile = randomOutputFile()
     const res = await build({
         entryPoints: paths.slice(0, 2),
+        plugins: [HtmlIngestPlugin({ root: base })],
         // metafile: 'meta',
         ...options,
     })
@@ -96,6 +98,7 @@ test('multiple entries', async () => {
 test('multiple html scripts', async () => {
     const {
         unlink,
+        base,
         paths: [ENTRY],
     } = await writeFiles({
         'entrypoint.html': `
@@ -115,6 +118,7 @@ test('multiple html scripts', async () => {
     // const outfile = randomOutputFile()
     const res = await build({
         entryPoints: [ENTRY],
+        plugins: [HtmlIngestPlugin({ root: base })],
         ...options,
     })
     console.log(formatEsbuildOutput(res))
