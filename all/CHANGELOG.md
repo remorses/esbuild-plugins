@@ -1,5 +1,12 @@
 # @esbuild-plugins/all
 
+## 0.0.3
+
+### Patch Changes
+
+-   Updated dependencies [798fe8c]
+    -   @esbuild-plugins/html@0.0.5
+
 ## 0.0.2
 
 ### Patch Changes
