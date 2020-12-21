@@ -21,7 +21,7 @@ interface Options {
     extensions: string[]
     namespace?: string | undefined
     onNonResolved?: (id: string) => OnResolveResult | undefined | null | void
-    onResolved?: (p: string) => Promise<any> | any
+    onResolved?: (p: string, importer: string) => Promise<any> | any
     resolveOptions?: Partial<AsyncOpts>
 }
 
@@ -113,7 +113,7 @@ export function NodeResolvePlugin({
                 // resolved = path.relative(resolved, process.cwd())
                 debug(`resolved '${resolved}'`)
                 if (resolved && onResolved) {
-                    const res = await onResolved(resolved)
+                    const res = await onResolved(resolved, args.importer)
                     if (typeof res === 'string') {
                         return {
                             path: res,
