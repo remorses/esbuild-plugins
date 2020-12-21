@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-globals-polyfill
 
+## 0.0.4
+
+### Patch Changes
+
+-   f17a368: API changes
+
 ## 0.0.3
 
 ### Patch Changes

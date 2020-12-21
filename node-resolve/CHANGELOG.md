@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-resolve
 
+## 0.0.4
+
+### Patch Changes
+
+-   f17a368: API changes
+
 ## 0.0.3
 
 ### Patch Changes

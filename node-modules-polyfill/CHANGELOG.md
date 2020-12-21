@@ -1,6 +1,13 @@
 # @esbuild-plugins/node-modules-polyfill
 
-## 0.0.1
+## 0.0.2
+
 ### Patch Changes
 
-- Initial Release
+-   f17a368: API changes
+
+## 0.0.1
+
+### Patch Changes
+
+-   Initial Release
