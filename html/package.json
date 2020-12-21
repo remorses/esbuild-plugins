@@ -23,7 +23,7 @@
     },
     "dependencies": {
         "debug": "^4.3.1",
-        "@esbuild-plugins/node-resolve": "*",
+        "@esbuild-plugins/node-resolve": "0.0.4",
         "posthtml": "^0.15.1"
     },
     "peerDependencies": {
