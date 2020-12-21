@@ -1,5 +1,13 @@
 # @esbuild-plugins/all
 
+## 0.0.5
+
+### Patch Changes
+
+-   8a32240: Fix html parser for scripts without attrs
+-   Updated dependencies [8a32240]
+    -   @esbuild-plugins/html@0.0.6
+
 ## 0.0.4
 
 ### Patch Changes
