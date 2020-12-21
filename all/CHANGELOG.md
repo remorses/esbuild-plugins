@@ -1,5 +1,11 @@
 # @esbuild-plugins/all
 
+## 0.0.4
+
+### Patch Changes
+
+-   a6a1663: Fix deps ranges
+
 ## 0.0.3
 
 ### Patch Changes
