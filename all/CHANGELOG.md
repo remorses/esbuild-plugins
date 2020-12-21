@@ -1,5 +1,14 @@
 # @esbuild-plugins/all
 
+## 0.0.6
+
+### Patch Changes
+
+-   b9225c9: Added importer argument to onResolved
+-   Updated dependencies [b9225c9]
+    -   @esbuild-plugins/node-resolve@0.0.5
+    -   @esbuild-plugins/html@0.0.7
+
 ## 0.0.5
 
 ### Patch Changes
