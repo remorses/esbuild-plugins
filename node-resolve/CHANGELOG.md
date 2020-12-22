@@ -1,5 +1,12 @@
 # @esbuild-plugins/node-resolve
 
+## 0.0.6
+
+### Patch Changes
+
+-   62ad493: Fix onNonResolved
+-   7011fce: Fix dist
+
 ## 0.0.5
 
 ### Patch Changes

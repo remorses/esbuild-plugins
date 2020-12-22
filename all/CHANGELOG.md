@@ -1,5 +1,16 @@
 # @esbuild-plugins/all
 
+## 0.0.7
+
+### Patch Changes
+
+-   62ad493: Fix onNonResolved
+-   7011fce: Fix dist
+-   Updated dependencies [62ad493]
+-   Updated dependencies [7011fce]
+    -   @esbuild-plugins/node-resolve@0.0.6
+    -   @esbuild-plugins/html@0.0.8
+
 ## 0.0.6
 
 ### Patch Changes
