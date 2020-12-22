@@ -19,6 +19,7 @@ interface Options {
     name?: string
     mainFields?: string[]
     extensions: string[]
+    // TODO add an importsNeedExtension to only match imports with given extension, useful to resolve css and assets only if they match regex
     namespace?: string | undefined
     onNonResolved?: (id: string) => OnResolveResult | undefined | null | void
     onResolved?: (p: string, importer: string) => Promise<any> | any
@@ -29,12 +30,11 @@ let isUsingYarnPnp = false
 
 try {
     require('pnpapi')
-    console.log('Using Yarn PnP resolver')
     isUsingYarnPnp = true
 } catch {}
 
 export function NodeResolvePlugin({
-    onNonResolved: onUnresolved,
+    onNonResolved,
     namespace,
     extensions,
     onResolved,
@@ -103,8 +103,8 @@ export function NodeResolvePlugin({
                     })
                 } catch (e) {
                     debug(`not resolved ${args.path}`)
-                    if (onUnresolved) {
-                        let res = await onUnresolved(e)
+                    if (onNonResolved) {
+                        let res = await onNonResolved(args.path)
                         return res || null
                     } else {
                         return null
