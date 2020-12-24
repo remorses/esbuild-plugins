@@ -3,6 +3,7 @@
     "version": "0.0.4",
     "description": "",
     "preferUnplugged": true,
+    "sideEffects": "false",
     "main": "dist/index.js",
     "module": "esm/index.js",
     "types": "dist/index.d.ts",
