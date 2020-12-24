@@ -11,7 +11,7 @@ interface Options {
     // TODO i need to emit html file but i don't know the outdir
     name?: string
     root: string // to resolve paths in case the html page is not in root
-    transformImportPath?: (importPath?: string) => string
+    transformImportPath?: (importPath: string) => string
     // emitHtml?: (arg: { path: string; html: string }) => Promise<void>
 }
 

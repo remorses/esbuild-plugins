@@ -3,7 +3,7 @@ import posthtml, { Node, Plugin } from 'posthtml'
 export async function getHtmlScriptsUrls(html: string) {
     const urls: string[] = []
     const transformer = posthtml([
-        async (tree) => {
+        (tree) => {
             tree.walk((node) => {
                 if (
                     node &&
