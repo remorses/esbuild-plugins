@@ -1,6 +1,5 @@
 import escapeStringRegexp from 'escape-string-regexp'
-const NAME = require('../package.json').name
-const debug = require('debug')(NAME)
+const NAME = 'esm-externals'
 const NAMESPACE = NAME
 
 export function EsmExternalsPlugin({ externals }: { externals: string[] }) {

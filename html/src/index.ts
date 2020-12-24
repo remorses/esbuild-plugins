@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { bareImportRE, getHtmlScriptsUrls } from './html'
 import { NodeResolvePlugin, resolveAsync } from '@esbuild-plugins/node-resolve'
-const NAME = require('../package.json').name
+const NAME = 'html'
 const debug = require('debug')(NAME)
 
 interface Options {

@@ -5,7 +5,7 @@ import { nodeModuleNameResolver, sys } from 'typescript'
 import findUp from 'find-up'
 import stripJsonComments from 'strip-json-comments'
 
-const NAME = require('../package.json').name
+const NAME = 'tsconfig-paths'
 const debug = require('debug')(NAME)
 
 interface Options {

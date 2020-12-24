@@ -6,7 +6,7 @@ import path from 'path'
 import resolve, { AsyncOpts } from 'resolve'
 import { promisify } from 'util'
 
-const NAME = require('../package.json').name
+const NAME = 'node-resolve'
 const debug = require('debug')(NAME)
 
 export const resolveAsync: (
