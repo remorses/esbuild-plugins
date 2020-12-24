@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import { builtinsPolyfills } from './polyfills'
 // import { NodeResolvePlugin } from '@esbuild-plugins/node-resolve'
-const NAME = require('../package.json').name
+const NAME = 'node-modules-polyfills'
 const debug = require('debug')(NAME)
 const NAMESPACE = NAME
 
@@ -17,6 +17,7 @@ function removeEndingSlash(importee) {
 
 export interface NodePolyfillsOptions {
     fs?: boolean
+    name?: string
     crypto?: boolean
     namespace?: string
 }
@@ -24,14 +25,14 @@ export interface NodePolyfillsOptions {
 export function NodeModulesPolyfillPlugin(
     options: NodePolyfillsOptions = {},
 ): Plugin {
-    const { namespace = NAMESPACE } = options
+    const { namespace = NAMESPACE, name = NAME } = options
     const polyfilledBuiltins = builtinsPolyfills(options)
     const polyfilledBuiltinsNames = [...polyfilledBuiltins.keys()]
 
     return {
-        name: NAME,
+        name,
         setup: function setup({ onLoad, onResolve }) {
-            // TODO these module cannot import anything, is that ok?
+            // TODO these polyfill module cannot import anything, is that ok?
             onLoad({ filter: /.*/, namespace }, async (args) => {
                 try {
                     const resolved = polyfilledBuiltins.get(
