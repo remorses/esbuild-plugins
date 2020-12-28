@@ -1,6 +1,6 @@
 {
     "name": "@esbuild-plugins/all",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "",
     "main": "dist/index.js",
     "module": "esm/index.js",
@@ -20,10 +20,10 @@
     "license": "ISC",
     "dependencies": {
         "@esbuild-plugins/node-resolve": "0.0.6",
-        "@esbuild-plugins/html": "0.0.8",
+        "@esbuild-plugins/html": "0.0.9",
         "@esbuild-plugins/esm-externals": "0.0.2",
         "@esbuild-plugins/node-modules-polyfill": "0.0.2",
-        "@esbuild-plugins/node-globals-polyfill": "0.0.4"
+        "@esbuild-plugins/node-globals-polyfill": "0.0.5"
     },
     "peerDependencies": {
         "esbuild": "*"

@@ -1,5 +1,11 @@
 # @esbuild-plugins/html
 
+## 0.0.9
+
+### Patch Changes
+
+-   fb88f9a: Small fix
+
 ## 0.0.8
 
 ### Patch Changes

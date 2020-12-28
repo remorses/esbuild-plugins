@@ -1,5 +1,14 @@
 # @esbuild-plugins/all
 
+## 0.0.8
+
+### Patch Changes
+
+-   fb88f9a: Small fix
+-   Updated dependencies [fb88f9a]
+    -   @esbuild-plugins/html@0.0.9
+    -   @esbuild-plugins/node-globals-polyfill@0.0.5
+
 ## 0.0.7
 
 ### Patch Changes
