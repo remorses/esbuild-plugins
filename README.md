@@ -27,7 +27,18 @@ Resolve files with the [resolve](https://www.npmjs.com/package/resolve) package 
 import NodeResolve from '@esbuild-plugins/node-resolve'
 import { build } from 'esbuild'
 build({
-    plugins: [NodeResolve()],
+    plugins: [
+        NodeResolve({
+            onResolved: (resolved) => {
+                if (resolved.includes('node_modules')) {
+                    return {
+                        external: true,
+                    }
+                }
+                return resolved
+            },
+        }),
+    ],
 })
 ```
 

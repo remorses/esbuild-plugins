@@ -79,13 +79,10 @@ export function HtmlIngestPlugin({
                         .map((importPath) => `export * from '${importPath}'`)
                         .join('\n')
 
-                    let resolveDir = path.dirname(args.path)
-
                     debug('onLoad')
                     return {
                         loader: 'js',
                         contents,
-                        resolveDir,
                     }
                 } catch (e) {
                     throw new Error(`Cannot load ${args.path}, ${e}`)
