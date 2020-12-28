@@ -1,6 +1,6 @@
 {
     "name": "@esbuild-plugins/html",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "",
     "main": "dist/index.js",
     "module": "esm/index.js",
@@ -23,7 +23,7 @@
     },
     "dependencies": {
         "debug": "^4.3.1",
-        "@esbuild-plugins/node-resolve": "0.0.6",
+        "@esbuild-plugins/node-resolve": "0.0.7",
         "posthtml": "^0.15.1"
     },
     "peerDependencies": {

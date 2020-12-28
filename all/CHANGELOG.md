@@ -1,5 +1,14 @@
 # @esbuild-plugins/all
 
+## 0.0.9
+
+### Patch Changes
+
+-   c00f990: Never use symlinks
+-   Updated dependencies [c00f990]
+    -   @esbuild-plugins/node-resolve@0.0.7
+    -   @esbuild-plugins/html@0.0.10
+
 ## 0.0.8
 
 ### Patch Changes
