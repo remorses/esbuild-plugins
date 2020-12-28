@@ -79,7 +79,7 @@ export function NodeResolvePlugin({
                 try {
                     resolved = await resolveAsync(args.path, {
                         basedir: args.resolveDir,
-                        preserveSymlinks: isUsingYarnPnp,
+                        preserveSymlinks: false,
                         extensions,
                         packageFilter: (packageJSON) => {
                             if (!mainFields?.length) {

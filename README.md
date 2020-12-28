@@ -29,6 +29,7 @@ import { build } from 'esbuild'
 build({
     plugins: [
         NodeResolve({
+            extensions: ['.ts', '.js'],
             onResolved: (resolved) => {
                 if (resolved.includes('node_modules')) {
                     return {
