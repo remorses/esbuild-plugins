@@ -32,5 +32,6 @@
     "private": true,
     "repository": "https://github.com/remorses/esbuild-plugins.git",
     "author": "remorses <beats.by.morse@gmail.com>",
-    "license": "MIT"
+    "license": "MIT",
+    "version": "0.0.0"
 }
