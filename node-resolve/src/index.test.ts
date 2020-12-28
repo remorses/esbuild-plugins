@@ -45,6 +45,37 @@ test('works', async () => {
     // console.log(formatEsbuildOutput(res))
 })
 
+test('all resolved paths are absolute', async () => {
+    const {
+        unlink,
+        base,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `import {x} from './utils'; console.log(x);`,
+        'utils.ts': `import mod from 'mod'; export const x = mod('x');`,
+        'node_modules/mod/index.js': 'export default () => {}',
+    })
+    let resolved: string[] = []
+    const res = await build({
+        entryPoints: [ENTRY],
+        write: false,
+        format: 'esm',
+        bundle: true,
+        plugins: [
+            NodeResolvePlugin({
+                extensions: ['.js', '.ts'],
+                onResolved: (x) => {
+                    resolved.push(x)
+                    return x
+                },
+            }),
+        ],
+    })
+    expect(resolved.filter((x) => path.isAbsolute(x)).length).toEqual(3)
+    unlink()
+    // console.log(formatEsbuildOutput(res))
+})
+
 test('does not throw when onUnresolved', async () => {
     const {
         unlink,
