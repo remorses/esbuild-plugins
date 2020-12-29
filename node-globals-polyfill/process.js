@@ -202,7 +202,7 @@ function uptime() {
     return dif / 1000
 }
 
-export const process = {
+export var process = {
     nextTick: nextTick,
     title: title,
     browser: browser,
