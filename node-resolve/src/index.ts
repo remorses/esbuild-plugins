@@ -22,7 +22,10 @@ interface Options {
     // TODO add an importsNeedExtension to only match imports with given extension, useful to resolve css and assets only if they match regex
     namespace?: string | undefined
     onNonResolved?: (id: string) => OnResolveResult | undefined | null | void
-    onResolved?: (p: string, importer: string) => Promise<any> | any
+    onResolved?: (
+        p: string,
+        importer: string,
+    ) => Promise<string | undefined | void | OnResolveResult> | any
     resolveOptions?: Partial<AsyncOpts>
 }
 
@@ -120,7 +123,12 @@ export function NodeResolvePlugin({
                             namespace,
                         }
                     }
-                    if (res?.path) {
+                    if (
+                        res?.path != null ||
+                        res?.external != null ||
+                        res?.namespace != null ||
+                        res?.errors != null
+                    ) {
                         return res
                     }
                 }
