@@ -1,5 +1,14 @@
 # @esbuild-plugins/all
 
+## 0.0.10
+
+### Patch Changes
+
+-   b173d07: fix node resolve external use case
+-   Updated dependencies [b173d07]
+    -   @esbuild-plugins/node-resolve@0.0.8
+    -   @esbuild-plugins/html@0.0.11
+
 ## 0.0.9
 
 ### Patch Changes
