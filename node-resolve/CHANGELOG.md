@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-resolve
 
+## 0.0.9
+
+### Patch Changes
+
+-   69e5c9c: Node resolve asyncResolve does not resolve to wrong extension
+
 ## 0.0.8
 
 ### Patch Changes
