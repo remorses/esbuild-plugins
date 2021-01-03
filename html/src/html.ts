@@ -19,7 +19,11 @@ export async function getHtmlScriptsUrls(html: string) {
             })
         },
     ])
-    const result = await transformer.process(html)
+    try {
+        await transformer.process(html)
+    } catch (e) {
+        throw new Error(`Cannot process html with posthtml: ${e}\n${html}`)
+    }
     return urls.filter(Boolean)
 }
 
