@@ -72,7 +72,7 @@ export function NodeResolvePlugin({
                     let resolveDir = path.dirname(args.path)
                     debug('onLoad')
                     return {
-                        loader: 'default',
+                        loader: 'default', // TODO esbuild default loader is not working
                         contents,
                         resolveDir,
                     }
