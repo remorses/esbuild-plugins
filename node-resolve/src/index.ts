@@ -31,7 +31,10 @@ interface Options {
     extensions: string[]
     // TODO add an importsNeedExtension to only match imports with given extension, useful to resolve css and assets only if they match regex
     namespace?: string | undefined
-    onNonResolved?: (id: string) => OnResolveResult | undefined | null | void
+    onNonResolved?: (
+        id: string,
+        importer: string,
+    ) => OnResolveResult | undefined | null | void
     onResolved?: (
         p: string,
         importer: string,
@@ -117,7 +120,7 @@ export function NodeResolvePlugin({
                 } catch (e) {
                     debug(`not resolved ${args.path}`)
                     if (onNonResolved) {
-                        let res = await onNonResolved(args.path)
+                        let res = await onNonResolved(args.path, args.importer)
                         return res || null
                     } else {
                         return null
