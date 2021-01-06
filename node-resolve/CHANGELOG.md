@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-resolve
 
+## 0.0.10
+
+### Patch Changes
+
+-   6943933: Pass importer to onNonResolved
+
 ## 0.0.9
 
 ### Patch Changes
