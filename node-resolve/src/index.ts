@@ -12,17 +12,7 @@ const debug = require('debug')(NAME)
 export const resolveAsync: (
     id: string,
     opts: AsyncOpts,
-) => Promise<string | void> = async (id, opts) => {
-    const result = await promisify(resolve as any)(id, opts)
-    if (
-        result &&
-        opts.extensions &&
-        !opts.extensions.includes(path.extname(result))
-    ) {
-        return
-    }
-    return result
-}
+) => Promise<string | void> = promisify(resolve as any)
 
 interface Options {
     // extensions is required to not implicitly fail on .json and other complex scenarios like .mjs
