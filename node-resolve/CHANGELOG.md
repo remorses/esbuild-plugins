@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-resolve
 
+## 0.0.12
+
+### Patch Changes
+
+-   a603e5a: Fix npm dist files
+
 ## 0.0.11
 
 ### Patch Changes
