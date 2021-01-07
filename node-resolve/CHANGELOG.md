@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-resolve
 
+## 0.0.11
+
+### Patch Changes
+
+-   2b6d4ba: added support for isExtensionRequiredInImportPath
+
 ## 0.0.10
 
 ### Patch Changes
