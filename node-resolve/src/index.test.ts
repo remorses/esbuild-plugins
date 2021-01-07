@@ -146,4 +146,45 @@ test('uses mainFields option', async () => {
     unlink()
 })
 
+test('isExtensionRequiredInImportPath', async () => {
+    const {
+        unlink,
+        base,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `import {x} from './utils.ts'; console.log(x);`,
+        'utils.ts': `export * from './another.ts?query'`,
+        'another.ts': `import mod from 'mod'; export const x = mod('x');`,
+        'node_modules/mod/index.js': 'export default () => {}',
+    })
+    let called = 0
+    let resolved: string[] = []
+    const res = await build({
+        entryPoints: [ENTRY],
+        write: false,
+        format: 'esm',
+        target: 'es2017',
+        bundle: true,
+        plugins: [
+            NodeResolvePlugin({
+                extensions: ['.js', '.ts'],
+                isExtensionRequiredInImportPath: true,
+                onNonResolved: (p) => {
+                    throw new Error(`cannot resolve ${p}`)
+                },
+                onResolved: (x) => {
+                    resolved.push(x)
+                    called++
+                    return x
+                },
+            }),
+        ],
+    })
+    expect(called).toBe(3)
+    const expected = ['entry.ts', 'utils.ts', 'another.ts']
+    expect(resolved.map(normalize(base))).toEqual(expected)
+    unlink()
+    // console.log(formatEsbuildOutput(res))
+})
+
 const normalize = (base) => (x) => slash(path.relative(base, x))

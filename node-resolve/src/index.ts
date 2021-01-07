@@ -19,6 +19,7 @@ interface Options {
     name?: string
     mainFields?: string[]
     extensions: string[]
+    isExtensionRequiredInImportPath?: boolean
     // TODO add an importsNeedExtension to only match imports with given extension, useful to resolve css and assets only if they match regex
     namespace?: string | undefined
     onNonResolved?: (
@@ -43,6 +44,7 @@ export function NodeResolvePlugin({
     onNonResolved,
     namespace,
     extensions,
+    isExtensionRequiredInImportPath,
     onResolved,
     resolveOptions,
     mainFields,
@@ -51,7 +53,7 @@ export function NodeResolvePlugin({
     const builtinsSet = new Set(builtins)
     debug('setup')
     const filter = new RegExp(
-        '(' + extensions.map(escapeStringRegexp).join('|') + ')$',
+        '(' + extensions.map(escapeStringRegexp).join('|') + ')(\\?.*)?$', // allows query strings
     )
     return {
         name,
@@ -71,81 +73,92 @@ export function NodeResolvePlugin({
                     }
                 } catch (e) {
                     return null
-                    throw new Error(`Cannot load ${args.path}, ${e}`)
                 }
             })
 
-            onResolve({ filter: /.*/ }, async function resolver(
-                args: OnResolveArgs,
-            ) {
-                if (builtinsSet.has(args.path)) {
-                    return null
-                }
-                let resolved
-                try {
-                    resolved = await resolveAsync(args.path, {
-                        basedir: args.resolveDir,
-                        preserveSymlinks: false,
-                        extensions,
-                        packageFilter: (packageJSON) => {
-                            if (!mainFields?.length) {
-                                return packageJSON
-                            }
-                            // changes the main field to be another field
-                            for (let mainField of mainFields) {
-                                if (mainField === 'main') {
-                                    break
-                                }
-                                const newMain = packageJSON[mainField]
-                                if (newMain && typeof newMain === 'string') {
-                                    debug(`set main to '${mainField}`)
-                                    packageJSON['main'] = newMain
-                                    break
-                                }
-                            }
-                            return packageJSON
-                        },
-                        ...resolveOptions,
-                    })
-                } catch (e) {
-                    debug(`not resolved ${args.path}`)
-                    if (onNonResolved) {
-                        let res = await onNonResolved(args.path, args.importer)
-                        return res || null
-                    } else {
+            onResolve(
+                { filter: isExtensionRequiredInImportPath ? filter : /.*/ },
+                async function resolver(args: OnResolveArgs) {
+                    args.path = cleanUrl(args.path)
+                    if (builtinsSet.has(args.path)) {
                         return null
                     }
-                }
-                // resolved = path.relative(resolved, process.cwd())
-                debug(`resolved '${resolved}'`)
-                if (resolved && onResolved) {
-                    const res = await onResolved(resolved, args.importer)
-                    if (typeof res === 'string') {
+                    let resolved
+                    try {
+                        resolved = await resolveAsync(args.path, {
+                            basedir: args.resolveDir,
+                            preserveSymlinks: false,
+                            extensions,
+                            packageFilter: (packageJSON) => {
+                                if (!mainFields?.length) {
+                                    return packageJSON
+                                }
+                                // changes the main field to be another field
+                                for (let mainField of mainFields) {
+                                    if (mainField === 'main') {
+                                        break
+                                    }
+                                    const newMain = packageJSON[mainField]
+                                    if (
+                                        newMain &&
+                                        typeof newMain === 'string'
+                                    ) {
+                                        debug(`set main to '${mainField}`)
+                                        packageJSON['main'] = newMain
+                                        break
+                                    }
+                                }
+                                return packageJSON
+                            },
+                            ...resolveOptions,
+                        })
+                    } catch (e) {
+                        debug(`not resolved ${args.path}`)
+                        if (onNonResolved) {
+                            let res = await onNonResolved(
+                                args.path,
+                                args.importer,
+                            )
+                            return res || null
+                        } else {
+                            return null
+                        }
+                    }
+                    // resolved = path.relative(resolved, process.cwd())
+                    debug(`resolved '${resolved}'`)
+                    if (resolved && onResolved) {
+                        const res = await onResolved(resolved, args.importer)
+                        if (typeof res === 'string') {
+                            return {
+                                path: res,
+                                namespace,
+                            }
+                        }
+                        if (
+                            res?.path != null ||
+                            res?.external != null ||
+                            res?.namespace != null ||
+                            res?.errors != null
+                        ) {
+                            return res
+                        }
+                    }
+
+                    debug('onResolve')
+                    if (resolved) {
                         return {
-                            path: res,
+                            path: resolved,
                             namespace,
                         }
                     }
-                    if (
-                        res?.path != null ||
-                        res?.external != null ||
-                        res?.namespace != null ||
-                        res?.errors != null
-                    ) {
-                        return res
-                    }
-                }
-
-                debug('onResolve')
-                if (resolved) {
-                    return {
-                        path: resolved,
-                        namespace,
-                    }
-                }
-            })
+                },
+            )
         },
     }
 }
 
 export default NodeResolvePlugin
+
+export const queryRE = /\?.*$/
+
+export const cleanUrl = (url: string) => url.replace(queryRE, '')
