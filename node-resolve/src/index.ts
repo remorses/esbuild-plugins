@@ -3,7 +3,7 @@ import escapeStringRegexp from 'escape-string-regexp'
 import fs from 'fs'
 import { builtinModules as builtins } from 'module'
 import path from 'path'
-import resolve, { AsyncOpts } from 'resolve'
+import resolve, { Opts as ResolveOpts } from 'resolve'
 import { promisify } from 'util'
 
 const NAME = 'node-resolve'
@@ -11,7 +11,7 @@ const debug = require('debug')(NAME)
 
 export const resolveAsync: (
     id: string,
-    opts: AsyncOpts,
+    opts: ResolveOpts,
 ) => Promise<string | void> = promisify(resolve as any)
 
 interface Options {
@@ -19,6 +19,7 @@ interface Options {
     name?: string
     mainFields?: string[]
     extensions: string[]
+    resolveSynchronously?: boolean
     isExtensionRequiredInImportPath?: boolean
     // TODO add an importsNeedExtension to only match imports with given extension, useful to resolve css and assets only if they match regex
     namespace?: string | undefined
@@ -30,7 +31,7 @@ interface Options {
         p: string,
         importer: string,
     ) => Promise<string | undefined | void | OnResolveResult> | any
-    resolveOptions?: Partial<AsyncOpts>
+    resolveOptions?: Partial<ResolveOpts>
 }
 
 let isUsingYarnPnp = false
@@ -44,11 +45,12 @@ export function NodeResolvePlugin({
     onNonResolved,
     namespace,
     extensions,
-    isExtensionRequiredInImportPath,
     onResolved,
     resolveOptions,
     mainFields,
     name = NAME,
+    isExtensionRequiredInImportPath,
+    resolveSynchronously,
 }: Options): Plugin {
     const builtinsSet = new Set(builtins)
     debug('setup')
@@ -83,35 +85,36 @@ export function NodeResolvePlugin({
                     if (builtinsSet.has(args.path)) {
                         return null
                     }
+                    function packageFilter(packageJSON) {
+                        if (!mainFields?.length) {
+                            return packageJSON
+                        }
+                        // changes the main field to be another field
+                        for (let mainField of mainFields) {
+                            if (mainField === 'main') {
+                                break
+                            }
+                            const newMain = packageJSON[mainField]
+                            if (newMain && typeof newMain === 'string') {
+                                debug(`set main to '${mainField}`)
+                                packageJSON['main'] = newMain
+                                break
+                            }
+                        }
+                        return packageJSON
+                    }
                     let resolved
                     try {
-                        resolved = await resolveAsync(args.path, {
+                        const options: ResolveOpts = {
                             basedir: args.resolveDir,
                             preserveSymlinks: false,
                             extensions,
-                            packageFilter: (packageJSON) => {
-                                if (!mainFields?.length) {
-                                    return packageJSON
-                                }
-                                // changes the main field to be another field
-                                for (let mainField of mainFields) {
-                                    if (mainField === 'main') {
-                                        break
-                                    }
-                                    const newMain = packageJSON[mainField]
-                                    if (
-                                        newMain &&
-                                        typeof newMain === 'string'
-                                    ) {
-                                        debug(`set main to '${mainField}`)
-                                        packageJSON['main'] = newMain
-                                        break
-                                    }
-                                }
-                                return packageJSON
-                            },
+                            packageFilter,
                             ...resolveOptions,
-                        })
+                        }
+                        resolved = resolveSynchronously
+                            ? resolve.sync(args.path, options)
+                            : await resolveAsync(args.path, options)
                     } catch (e) {
                         debug(`not resolved ${args.path}`)
                         if (onNonResolved) {
