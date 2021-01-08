@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-resolve
 
+## 0.0.13
+
+### Patch Changes
+
+-   f299e53: implemented resolveSynchronously
+
 ## 0.0.12
 
 ### Patch Changes
