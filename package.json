@@ -3,6 +3,7 @@
     "scripts": {
         "test": "NODE_ENV=test jest",
         "watch": "ultra -r watch",
+        "publ": "yarn changeset version && yarn changeset publish",
         "build": "ultra --build -r build",
         "release": "yarn build && changeset publish"
     },
@@ -25,6 +26,7 @@
         "@types/jest": "^26.0.16",
         "@types/node": "^14.14.10",
         "esbuild": "^0.8.26",
+        "esbuild-register": "^1.2.1",
         "jest": "^26.6.3",
         "typescript": "^4.1.2",
         "ultra-runner": "^3.6.0"
