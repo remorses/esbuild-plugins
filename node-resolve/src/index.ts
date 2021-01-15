@@ -9,10 +9,38 @@ import { promisify } from 'util'
 const NAME = 'node-resolve'
 const debug = require('debug')(NAME)
 
+type ResolveAsyncOpts = ResolveOpts & { mainFields?: string[] }
+
 export const resolveAsync: (
     id: string,
-    opts: ResolveOpts,
-) => Promise<string | void> = promisify(resolve as any)
+    opts: ResolveAsyncOpts,
+) => Promise<string | void> = async (id, { mainFields, ..._opts }) => {
+    function packageFilter(packageJSON) {
+        if (!mainFields?.length) {
+            return packageJSON
+        }
+        // changes the main field to be another field
+        for (let mainField of mainFields) {
+            if (mainField === 'main') {
+                break
+            }
+            const newMain = packageJSON[mainField]
+            if (newMain && typeof newMain === 'string') {
+                debug(`set main to '${mainField}`)
+                packageJSON['main'] = newMain
+                break
+            }
+        }
+        return packageJSON
+    }
+    const opts: ResolveOpts = {
+        ..._opts,
+        preserveSymlinks: false,
+        packageFilter,
+    }
+    const res = await promisify(resolve as any)(id, opts)
+    return res
+}
 
 interface Options {
     // extensions is required to not implicitly fail on .json and other complex scenarios like .mjs
@@ -33,13 +61,6 @@ interface Options {
     ) => Promise<string | undefined | void | OnResolveResult> | any
     resolveOptions?: Partial<ResolveOpts>
 }
-
-let isUsingYarnPnp = false
-
-try {
-    require('pnpapi')
-    isUsingYarnPnp = true
-} catch {}
 
 export function NodeResolvePlugin({
     onNonResolved,
@@ -85,31 +106,14 @@ export function NodeResolvePlugin({
                     if (builtinsSet.has(args.path)) {
                         return null
                     }
-                    function packageFilter(packageJSON) {
-                        if (!mainFields?.length) {
-                            return packageJSON
-                        }
-                        // changes the main field to be another field
-                        for (let mainField of mainFields) {
-                            if (mainField === 'main') {
-                                break
-                            }
-                            const newMain = packageJSON[mainField]
-                            if (newMain && typeof newMain === 'string') {
-                                debug(`set main to '${mainField}`)
-                                packageJSON['main'] = newMain
-                                break
-                            }
-                        }
-                        return packageJSON
-                    }
+
                     let resolved
                     try {
-                        const options: ResolveOpts = {
+                        const options: ResolveAsyncOpts = {
                             basedir: args.resolveDir,
                             preserveSymlinks: false,
                             extensions,
-                            packageFilter,
+                            mainFields,
                             ...resolveOptions,
                         }
                         resolved = resolveSynchronously
