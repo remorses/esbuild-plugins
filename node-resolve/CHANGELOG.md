@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-resolve
 
+## 0.0.14
+
+### Patch Changes
+
+-   8f79800: Support for mainFields in resolveasync
+
 ## 0.0.13
 
 ### Patch Changes

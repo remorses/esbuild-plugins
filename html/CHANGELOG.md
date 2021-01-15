@@ -1,5 +1,12 @@
 # @esbuild-plugins/html
 
+## 0.0.17
+
+### Patch Changes
+
+-   Updated dependencies [8f79800]
+    -   @esbuild-plugins/node-resolve@0.0.14
+
 ## 0.0.16
 
 ### Patch Changes
