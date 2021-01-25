@@ -1,5 +1,13 @@
 # @esbuild-plugins/all
 
+## 0.0.18
+
+### Patch Changes
+
+-   794ea5b: Fix npm files
+-   Updated dependencies [794ea5b]
+    -   @esbuild-plugins/esm-externals@0.0.4
+
 ## 0.0.17
 
 ### Patch Changes
