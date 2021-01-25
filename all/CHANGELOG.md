@@ -1,5 +1,13 @@
 # @esbuild-plugins/all
 
+## 0.0.17
+
+### Patch Changes
+
+-   6154e06: Fix esm externals regex
+-   Updated dependencies [6154e06]
+    -   @esbuild-plugins/esm-externals@0.0.3
+
 ## 0.0.16
 
 ### Patch Changes
