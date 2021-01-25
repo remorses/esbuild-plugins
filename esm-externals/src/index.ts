@@ -21,7 +21,7 @@ export function EsmExternalsPlugin({ externals }: { externals: string[] }) {
             })
             build.onLoad({ filter: /.*/, namespace: NAMESPACE }, (args) => {
                 return {
-                    contents: `export * from ${JSON.stringify(args.path)}`,
+                    contents: `export * as default from ${JSON.stringify(args.path)}; export * from ${JSON.stringify(args.path)};`,
                 }
             })
         },
