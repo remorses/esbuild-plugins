@@ -1,5 +1,11 @@
 # @esbuild-plugins/esm-externals
 
+## 0.0.5
+
+### Patch Changes
+
+-   7328d17: Support for better interopability for commonjs externals
+
 ## 0.0.4
 
 ### Patch Changes
