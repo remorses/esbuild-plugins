@@ -6,9 +6,7 @@ export function EsmExternalsPlugin({ externals }: { externals: string[] }) {
     return {
         name: NAME,
         setup(build) {
-            const filter = new RegExp(
-                externals.map(escapeStringRegexp).join('|'),
-            )
+            const filter = makeFilter(externals)
             build.onResolve({ filter: /.*/, namespace: NAMESPACE }, (args) => {
                 return {
                     path: args.path,
@@ -31,3 +29,9 @@ export function EsmExternalsPlugin({ externals }: { externals: string[] }) {
 }
 
 export default EsmExternalsPlugin
+
+export function makeFilter(externals: string[]) {
+    return new RegExp(
+        '^(' + externals.map(escapeStringRegexp).join('|') + ')(\\/.*)?$', // TODO support for query strings?
+    )
+}

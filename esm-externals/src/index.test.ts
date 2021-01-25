@@ -1,9 +1,8 @@
 import { build } from 'esbuild'
 import { writeFiles } from 'test-support'
-import EsmExternalsPlugin from '.'
+import EsmExternalsPlugin, { makeFilter } from '.'
 
 require('debug').enable(require('../package.json').name)
-
 
 test('works', async () => {
     const {
@@ -24,4 +23,21 @@ test('works', async () => {
         plugins: [EsmExternalsPlugin({ externals: ['mod'] })],
     })
     unlink()
+})
+
+describe('makeFilter', () => {
+    const filter = makeFilter(['react'])
+    const positiveCases = ['react', 'react/', 'react/dist', 'react/dist/index']
+    for (let t of positiveCases) {
+        test(t, () => {
+            expect(filter.test(t)).toBe(true)
+        })
+    }
+
+    const falseCases = ['reactx', 'reactx/', 'react-dom']
+    for (let t of falseCases) {
+        test(t, () => {
+            expect(filter.test(t)).toBe(false)
+        })
+    }
 })
