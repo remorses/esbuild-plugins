@@ -16,7 +16,6 @@
 -   [x] `@esbuild-plugins/node-modules-polyfill`
 -   [x] `@esbuild-plugins/node-globals-polyfill`
 -   [x] `@esbuild-plugins/tsconfig-paths`
--   [ ] `@esbuild-plugins/webpack-loader-adapter`
 -   [ ] `@esbuild-plugins/html`
 
 ## @esbuild-plugins/node-resolve
