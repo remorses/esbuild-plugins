@@ -25,8 +25,8 @@ export async function writeFiles(graph: { [name: string]: string }) {
     return { unlink, paths, base }
 }
 
-export function randomOutputFile() {
-    const filename = v4().slice(0, 4) + '.js'
+export function randomOutputFile(extension = '.js') {
+    const filename = v4().slice(0, 4) + extension
     const outfile = path.resolve(os.tmpdir(), filename)
     return outfile
 }
