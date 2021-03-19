@@ -1,5 +1,14 @@
 # @esbuild-plugins/all
 
+## 0.0.20
+
+### Patch Changes
+
+-   Ignore data: paths
+-   Updated dependencies [undefined]
+    -   @esbuild-plugins/node-resolve@0.0.15
+    -   @esbuild-plugins/html@0.0.18
+
 ## 0.0.19
 
 ### Patch Changes

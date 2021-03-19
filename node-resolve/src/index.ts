@@ -106,6 +106,9 @@ export function NodeResolvePlugin({
                     if (builtinsSet.has(args.path)) {
                         return null
                     }
+                    if (args.path.startsWith('data:')) {
+                        return null
+                    }
 
                     let resolved
                     try {

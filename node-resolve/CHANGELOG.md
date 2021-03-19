@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-resolve
 
+## 0.0.15
+
+### Patch Changes
+
+-   Ignore data: paths
+
 ## 0.0.14
 
 ### Patch Changes
