@@ -16,9 +16,7 @@ function removeEndingSlash(importee) {
 }
 
 export interface NodePolyfillsOptions {
-    fs?: boolean
     name?: string
-    crypto?: boolean
     namespace?: string
 }
 
@@ -26,7 +24,7 @@ export function NodeModulesPolyfillPlugin(
     options: NodePolyfillsOptions = {},
 ): Plugin {
     const { namespace = NAMESPACE, name = NAME } = options
-    const polyfilledBuiltins = builtinsPolyfills(options)
+    const polyfilledBuiltins = builtinsPolyfills()
     const polyfilledBuiltinsNames = [...polyfilledBuiltins.keys()]
 
     return {

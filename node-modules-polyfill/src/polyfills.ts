@@ -1,13 +1,12 @@
 // Taken from https://github.com/ionic-team/rollup-plugin-node-polyfills/blob/master/src/modules.ts
 
-import { NodePolyfillsOptions } from "."
+import { NodePolyfillsOptions } from '.'
 
 const EMPTY_PATH = require.resolve(
     'rollup-plugin-node-polyfills/polyfills/empty.js',
 )
 
-
-export function builtinsPolyfills(opts: NodePolyfillsOptions = {}) {
+export function builtinsPolyfills() {
     const libs = new Map()
 
     libs.set(
@@ -135,22 +134,18 @@ export function builtinsPolyfills(opts: NodePolyfillsOptions = {}) {
     libs.set('fs', EMPTY_PATH)
     libs.set('crypto', EMPTY_PATH)
 
-    if (opts.fs) {
-        libs.set(
-            'fs',
-            require.resolve(
-                'rollup-plugin-node-polyfills/polyfills/browserify-fs',
-            ),
-        )
-    }
-    if (opts.crypto) {
-        libs.set(
-            'crypto',
-            require.resolve(
-                'rollup-plugin-node-polyfills/polyfills/crypto-browserify',
-            ),
-        )
-    }
+    // libs.set(
+    //     'fs',
+    //     require.resolve('rollup-plugin-node-polyfills/polyfills/browserify-fs'),
+    // )
+
+    // TODO enable crypto and fs https://github.com/ionic-team/rollup-plugin-node-polyfills/issues/20
+    // libs.set(
+    //     'crypto',
+    //     require.resolve(
+    //         'rollup-plugin-node-polyfills/polyfills/crypto-browserify',
+    //     ),
+    // )
 
     return libs
 }

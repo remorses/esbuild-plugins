@@ -10,7 +10,7 @@ test('works', async () => {
         paths: [ENTRY],
     } = await writeFiles({
         'entry.ts': `import {x} from './utils'; console.log(x);`,
-        'utils.ts': `import path from 'path'; export const x = path.resolve('x');`,
+        'utils.ts': `import path from 'path'; import { Buffer } from 'buffer'; export const x = path.resolve(Buffer.from('x').toString());`,
     })
     // const outfile = randomOutputFile()
     const res = await build({
@@ -21,6 +21,48 @@ test('works', async () => {
         bundle: true,
         plugins: [NodeModulesPolyfillsPlugin()],
     })
+    eval(res.outputFiles[0].text)
+    // console.log(res.outputFiles[0].text)
+    unlink()
+})
+
+test.skip('crypto', async () => {
+    const {
+        unlink,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `import { randomBytes } from 'crypto'; (randomBytes(20).toString('hex'))`,
+    })
+    // const outfile = randomOutputFile()
+    const res = await build({
+        entryPoints: [ENTRY],
+        write: false,
+        format: 'esm',
+        target: 'es2017',
+        bundle: true,
+        plugins: [NodeModulesPolyfillsPlugin()],
+    })
+    eval(res.outputFiles[0].text)
+    // console.log(res.outputFiles[0].text)
+    unlink()
+})
+test.skip('fs', async () => {
+    const {
+        unlink,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `import { readFile } from 'fs'; readFile('')`,
+    })
+    // const outfile = randomOutputFile()
+    const res = await build({
+        entryPoints: [ENTRY],
+        write: false,
+        format: 'esm',
+        target: 'es2017',
+        bundle: true,
+        plugins: [NodeModulesPolyfillsPlugin()],
+    })
+    eval(res.outputFiles[0].text)
     // console.log(res.outputFiles[0].text)
     unlink()
 })
