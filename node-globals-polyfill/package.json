@@ -16,6 +16,7 @@
         "dist",
         "src",
         "esm",
+        "Buffer.js",
         "process.js"
     ],
     "keywords": [],
