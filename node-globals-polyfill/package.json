@@ -17,7 +17,9 @@
         "src",
         "esm",
         "Buffer.js",
-        "process.js"
+        "process.js",
+        "_buffer.js",
+        "_process.js"
     ],
     "keywords": [],
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
