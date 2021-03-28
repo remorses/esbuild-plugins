@@ -24,10 +24,7 @@
     "devDependencies": {
         "test-support": "*"
     },
-    "dependencies": {
-        "debug": "^4.3.1",
-        "rollup-plugin-node-polyfills": "^0.2.1"
-    },
+    "dependencies": {},
     "peerDependencies": {
         "esbuild": "*"
     }

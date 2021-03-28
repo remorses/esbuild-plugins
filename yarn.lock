@@ -1705,10 +1705,10 @@ esbuild-register@^1.2.1:
     source-map-support "^0.5.19"
     strip-json-comments "^3.1.1"
 
-esbuild@^0.9.4:
-  version "0.9.4"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.9.4.tgz#4480ffc4c1e5d5bb25958f889b5de0279bfb2d6f"
-  integrity sha512-bF6laCiYE5+iAfZsX+v6Lwvi5QbvKN3tThxDIR2WLyLYzTzNn0ijdpqkvTVsafmRZjic2Nq1nkSf5RSWySDTjA==
+esbuild@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.10.2.tgz#caa65a8f3096d547d89159918039df6c5c6c90be"
+  integrity sha512-/5vsZD7wTJJHC3yNXLUjXNvUDwqwNoIMvFvLd9tcDQ9el5l13pspYm3yufavjIeYvNtAbo+6N/6uoWx9dGA6ug==
 
 escalade@^3.1.1:
   version "3.1.1"

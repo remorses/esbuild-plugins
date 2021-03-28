@@ -71,9 +71,9 @@ build({
 Polyfills nodejs globals like `process`
 
 ```ts
-import EsmExternals from '@esbuild-plugins/node-globals-polyfill'
+import GlobalsPolyfills from '@esbuild-plugins/node-globals-polyfill'
 import { build } from 'esbuild'
 build({
-    inject: [require.resolve('@esbuild-plugins/node-globals-polyfill/process')],
+    plugins: [GlobalsPolyfills({ process: true, buffer: true })],
 })
 ```
