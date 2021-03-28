@@ -74,6 +74,12 @@ Polyfills nodejs globals like `process`
 import GlobalsPolyfills from '@esbuild-plugins/node-globals-polyfill'
 import { build } from 'esbuild'
 build({
-    plugins: [GlobalsPolyfills({ process: true, buffer: true })],
+    plugins: [
+        GlobalsPolyfills({
+            process: true,
+            buffer: true,
+            define: { 'process.env.var': '"hello"' }, // inject will override define, to keep env vars you must also pass define here https://github.com/evanw/esbuild/issues/660
+        }),
+    ],
 })
 ```

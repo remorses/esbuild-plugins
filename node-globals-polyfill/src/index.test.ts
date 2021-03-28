@@ -83,7 +83,7 @@ test('Buffer works', async () => {
         format: 'esm',
         target: 'es2017',
         bundle: true,
-        inject: [require.resolve('../buffer')],
+        inject: [require.resolve('../Buffer')],
     })
     const output = res.outputFiles[0].text
     // console.log(output)
