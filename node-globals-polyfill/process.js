@@ -227,3 +227,19 @@ export var process = {
     config: config,
     uptime: uptime,
 }
+
+// replace process.env.VAR with stuff
+
+const defines = {}
+Object.keys(defines).forEach((key) => {
+    const segs = key.split('.')
+    let target = process
+    for (let i = 0; i < segs.length; i++) {
+        const seg = segs[i]
+        if (i === segs.length - 1) {
+            target[seg] = defines[key]
+        } else {
+            target = target[seg] || (target[seg] = {})
+        }
+    }
+})

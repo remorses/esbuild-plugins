@@ -44,6 +44,31 @@ test('process is tree shaken', async () => {
     expect(output).not.toContain('process')
     unlink()
 })
+test('process env vars are replaced with ones from define', async () => {
+    const {
+        unlink,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `if (process.env.VAR !== 'hello') { throw new Error('process.env.VAR not right: ' + process.env.VAR) }`,
+    })
+    const res = await build({
+        entryPoints: [ENTRY],
+        write: false,
+        format: 'esm',
+        target: 'es2017',
+        bundle: true,
+        plugins: [
+            NodeGlobalsPolyfillPlugin({
+                define: {
+                    'process.env.VAR': '"hello"',
+                },
+            }),
+        ],
+    })
+    const output = res.outputFiles[0].text
+    eval(output)
+    unlink()
+})
 
 test('Buffer works', async () => {
     const {

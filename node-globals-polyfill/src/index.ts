@@ -1,8 +1,10 @@
 import path from 'path'
+import fs from 'fs'
 import * as esbuild from 'esbuild'
 
 export function NodeGlobalsPolyfillPlugin({
     buffer = false,
+    define = {},
     process = true,
 } = {}): esbuild.Plugin {
     return {
@@ -19,9 +21,38 @@ export function NodeGlobalsPolyfillPlugin({
                 }
             })
 
+            onLoad({ filter: /_virtual-process-polyfill_\.js/ }, (arg) => {
+                const data = fs
+                    .readFileSync(path.resolve(__dirname, '../process.js'))
+                    .toString()
+
+                const keys = Object.keys(define)
+                return {
+                    loader: 'js',
+                    contents: data.replace(
+                        `const defines = {}`,
+                        'const defines = {\n' +
+                            keys
+                                .filter((x) => x.startsWith('process.'))
+                                .sort((a, b) => a.length - b.length)
+                                .map(
+                                    (k) =>
+                                        `  ${JSON.stringify(k).replace(
+                                            'process.',
+                                            '',
+                                        )}: ${define[k]},`,
+                                )
+                                .join('\n') +
+                            '\n}',
+                    ),
+                }
+            })
+
             const polyfills: string[] = []
             if (process) {
-                polyfills.push(path.resolve(__dirname, '../_process.js'))
+                polyfills.push(
+                    path.resolve(__dirname, '../_virtual-process-polyfill_.js'),
+                )
             }
             if (buffer) {
                 polyfills.push(path.resolve(__dirname, '../_buffer.js'))
@@ -34,6 +65,5 @@ export function NodeGlobalsPolyfillPlugin({
         },
     }
 }
-
 
 export default NodeGlobalsPolyfillPlugin
