@@ -25,6 +25,33 @@ test('works', async () => {
     // console.log(res.outputFiles[0].text)
     unlink()
 })
+test('events works', async () => {
+    const {
+        unlink,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `
+        import EventEmitter from 'events';
+
+        class Test extends EventEmitter {
+            constructor() { };
+        }
+        console.log(Test)
+        `,
+    })
+    // const outfile = randomOutputFile()
+    const res = await build({
+        entryPoints: [ENTRY],
+        write: false,
+        format: 'esm',
+        target: 'es2017',
+        bundle: true,
+        plugins: [NodeModulesPolyfillsPlugin()],
+    })
+    // console.log(res.outputFiles[0].text)
+    eval(res.outputFiles[0].text)
+    unlink()
+})
 
 test.skip('crypto', async () => {
     const {
