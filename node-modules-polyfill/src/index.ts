@@ -105,6 +105,8 @@ const polyfill = require('${importPath}')
 
 if (polyfill && polyfill.default) {
     module.exports = polyfill.default
+} else if (polyfill)  {
+    module.exports = polyfill
 }
 
 if (polyfill) {
