@@ -228,7 +228,7 @@ export var process = {
     uptime: uptime,
 }
 
-// replace process.env.VAR with stuff
+// replace process.env.VAR with define
 
 const defines = {}
 Object.keys(defines).forEach((key) => {

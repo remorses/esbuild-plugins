@@ -1,5 +1,14 @@
 # @esbuild-plugins/all
 
+## 0.0.21
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+-   Updated dependencies [undefined]
+    -   @esbuild-plugins/node-modules-polyfill@0.1.0
+    -   @esbuild-plugins/node-globals-polyfill@0.1.0
+
 ## 0.0.20
 
 ### Patch Changes

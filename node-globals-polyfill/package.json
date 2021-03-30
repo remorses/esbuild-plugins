@@ -1,6 +1,6 @@
 {
     "name": "@esbuild-plugins/node-globals-polyfill",
-    "version": "0.0.5",
+    "version": "0.1.0",
     "description": "",
     "preferUnplugged": true,
     "sideEffects": false,

@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-globals-polyfill
 
+## 0.1.0
+
+### Minor Changes
+
+-   Added plugin interface that changes initialOptions.inject, dedupe polyfills injected
+
 ## 0.0.5
 
 ### Patch Changes
