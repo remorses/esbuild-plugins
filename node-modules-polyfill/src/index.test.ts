@@ -73,7 +73,7 @@ test('require can use default export', async () => {
         bundle: true,
         plugins: [NodeModulesPolyfillsPlugin()],
     })
-    console.log(res.outputFiles[0].text)
+    // console.log(res.outputFiles[0].text)
     eval(res.outputFiles[0].text)
     unlink()
 })
