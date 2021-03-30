@@ -83,7 +83,7 @@ test.skip('crypto', async () => {
         unlink,
         paths: [ENTRY],
     } = await writeFiles({
-        'entry.ts': `import { randomBytes } from 'crypto'; (randomBytes(20).toString('hex'))`,
+        'entry.ts': `import { randomBytes } from 'crypto'; console.log(randomBytes(20).toString('hex'))`,
     })
     // const outfile = randomOutputFile()
     const res = await build({
@@ -103,7 +103,7 @@ test.skip('fs', async () => {
         unlink,
         paths: [ENTRY],
     } = await writeFiles({
-        'entry.ts': `import { readFile } from 'fs'; readFile('')`,
+        'entry.ts': `import { readFile } from 'fs'; console.log(readFile(''))`,
     })
     // const outfile = randomOutputFile()
     const res = await build({
