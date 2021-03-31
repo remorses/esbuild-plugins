@@ -9,7 +9,14 @@ import { promisify } from 'util'
 const NAME = 'node-resolve'
 const debug = require('debug')(NAME)
 
+let pnpapi
+try {
+    pnpapi = require('pnpapi')
+} catch {}
+
 type ResolveAsyncOpts = ResolveOpts & { mainFields?: string[] }
+
+const promisifiedResolve = promisify(resolve as any)
 
 export const resolveAsync: (
     id: string,
@@ -34,11 +41,17 @@ export const resolveAsync: (
         return packageJSON
     }
     const opts: ResolveOpts = {
-        ..._opts,
         preserveSymlinks: false,
         packageFilter,
+        ..._opts,
     }
-    const res = await promisify(resolve as any)(id, opts)
+    const res = await promisifiedResolve(id, opts)
+    if (res && pnpapi) {
+        const realPath = pnpapi.resolveVirtual(res)
+        if (realPath) {
+            return realPath
+        }
+    }
     return res
 }
 
@@ -49,7 +62,6 @@ interface Options {
     extensions: string[]
     resolveSynchronously?: boolean
     isExtensionRequiredInImportPath?: boolean
-    // TODO add an importsNeedExtension to only match imports with given extension, useful to resolve css and assets only if they match regex
     namespace?: string | undefined
     onNonResolved?: (
         id: string,
@@ -154,7 +166,12 @@ export function NodeResolvePlugin({
                         }
                     }
 
-                    debug('onResolve')
+                    if (resolveSynchronously && resolved && pnpapi) {
+                        const realPath = pnpapi.resolveVirtual(resolved)
+                        if (realPath) {
+                            return { path: realPath, namespace }
+                        }
+                    }
                     if (resolved) {
                         return {
                             path: resolved,
