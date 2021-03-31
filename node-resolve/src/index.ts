@@ -47,10 +47,12 @@ export const resolveAsync: (
     }
     const res = await promisifiedResolve(id, opts)
     if (res && pnpapi) {
-        const realPath = pnpapi.resolveVirtual(res)
-        if (realPath) {
-            return realPath
-        }
+        try {
+            const realPath = pnpapi.resolveVirtual(res)
+            if (realPath) {
+                return realPath
+            }
+        } catch {}
     }
     return res
 }
@@ -167,10 +169,12 @@ export function NodeResolvePlugin({
                     }
 
                     if (resolveSynchronously && resolved && pnpapi) {
-                        const realPath = pnpapi.resolveVirtual(resolved)
-                        if (realPath) {
-                            return { path: realPath, namespace }
-                        }
+                        try {
+                            const realPath = pnpapi.resolveVirtual(resolved)
+                            if (realPath) {
+                                return { path: realPath, namespace }
+                            }
+                        } catch {}
                     }
                     if (resolved) {
                         return {
