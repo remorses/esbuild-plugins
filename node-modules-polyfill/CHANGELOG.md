@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-modules-polyfill
 
+## 0.1.1
+
+### Patch Changes
+
+-   Fix requirejs interop
+
 ## 0.1.0
 
 ### Minor Changes
