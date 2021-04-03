@@ -1,5 +1,35 @@
 # @esbuild-plugins/node-resolve
 
+## 0.1.4
+
+### Patch Changes
+
+-   Fix error in yarn pnp
+
+## 0.1.3
+
+### Patch Changes
+
+-   Only use resolveVirtual on workspaces
+
+## 0.1.2
+
+### Patch Changes
+
+-   Added error param to onNonResolved
+
+## 0.1.1
+
+### Patch Changes
+
+-   Fix unhandled errors in pnpapi
+
+## 0.1.0
+
+### Minor Changes
+
+-   Resolve to real path and not virtuals when using yarn pnp
+
 ## 0.0.15
 
 ### Patch Changes

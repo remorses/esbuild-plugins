@@ -45,8 +45,10 @@ export const resolveAsync: (
         packageFilter,
         ..._opts,
     }
-    const res = await promisifiedResolve(id, opts)
-    if (res && pnpapi) {
+    const res: string | undefined = await promisifiedResolve(id, opts)
+
+    // resolve virtual workspaces to real path
+    if (pnpapi && res && !res.includes('node_modules')) {
         try {
             const realPath = pnpapi.resolveVirtual(res)
             if (realPath) {
@@ -68,6 +70,7 @@ interface Options {
     onNonResolved?: (
         id: string,
         importer: string,
+        e: Error,
     ) => OnResolveResult | undefined | null | void
     onResolved?: (
         p: string,
@@ -142,6 +145,7 @@ export function NodeResolvePlugin({
                             let res = await onNonResolved(
                                 args.path,
                                 args.importer,
+                                e,
                             )
                             return res || null
                         } else {
@@ -168,7 +172,12 @@ export function NodeResolvePlugin({
                         }
                     }
 
-                    if (resolveSynchronously && resolved && pnpapi) {
+                    if (
+                        pnpapi &&
+                        resolveSynchronously &&
+                        resolved &&
+                        !resolved.includes('node_modules')
+                    ) {
                         try {
                             const realPath = pnpapi.resolveVirtual(resolved)
                             if (realPath) {

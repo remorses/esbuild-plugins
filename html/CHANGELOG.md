@@ -1,5 +1,40 @@
 # @esbuild-plugins/html
 
+## 0.0.23
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   @esbuild-plugins/node-resolve@0.1.4
+
+## 0.0.22
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   @esbuild-plugins/node-resolve@0.1.3
+
+## 0.0.21
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   @esbuild-plugins/node-resolve@0.1.2
+
+## 0.0.20
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   @esbuild-plugins/node-resolve@0.1.1
+
+## 0.0.19
+
+### Patch Changes
+
+-   Updated dependencies [undefined]
+    -   @esbuild-plugins/node-resolve@0.1.0
+
 ## 0.0.18
 
 ### Patch Changes
