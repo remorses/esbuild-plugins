@@ -1,7 +1,7 @@
 {
     "name": "@esbuild-plugins/esm-externals",
     "version": "0.0.5",
-    "description": "",
+    "description": "Mark some packages as externals and enforce esm imports",
     "main": "dist/index.js",
     "module": "esm/index.js",
     "types": "dist/index.d.ts",
