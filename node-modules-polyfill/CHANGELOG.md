@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-modules-polyfill
 
+## 0.1.2
+
+### Patch Changes
+
+-   f35eeb6: Fix problem with commonjs interopability
+
 ## 0.1.1
 
 ### Patch Changes

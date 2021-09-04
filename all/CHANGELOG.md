@@ -1,5 +1,14 @@
 # @esbuild-plugins/all
 
+## 0.0.29
+
+### Patch Changes
+
+-   Updated dependencies [7723c7c]
+-   Updated dependencies [f35eeb6]
+    -   @esbuild-plugins/esm-externals@0.0.6
+    -   @esbuild-plugins/node-modules-polyfill@0.1.2
+
 ## 0.0.28
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @esbuild-plugins/esm-externals
 
+## 0.0.6
+
+### Patch Changes
+
+-   7723c7c: Added npm description
+
 ## 0.0.5
 
 ### Patch Changes

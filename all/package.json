@@ -1,6 +1,6 @@
 {
     "name": "@esbuild-plugins/all",
-    "version": "0.0.28",
+    "version": "0.0.29",
     "description": "",
     "main": "dist/index.js",
     "module": "esm/index.js",
@@ -21,8 +21,8 @@
     "dependencies": {
         "@esbuild-plugins/node-resolve": "0.1.4",
         "@esbuild-plugins/html": "0.0.23",
-        "@esbuild-plugins/esm-externals": "0.0.5",
-        "@esbuild-plugins/node-modules-polyfill": "0.1.1",
+        "@esbuild-plugins/esm-externals": "0.0.6",
+        "@esbuild-plugins/node-modules-polyfill": "0.1.2",
         "@esbuild-plugins/node-globals-polyfill": "0.1.1"
     },
     "peerDependencies": {
