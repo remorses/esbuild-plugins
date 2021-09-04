@@ -1,5 +1,12 @@
 # @esbuild-plugins/all
 
+## 0.0.29
+
+### Patch Changes
+
+-   Updated dependencies [7723c7c]
+    -   @esbuild-plugins/esm-externals@0.0.6
+
 ## 0.0.28
 
 ### Patch Changes
