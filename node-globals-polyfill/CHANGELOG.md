@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-globals-polyfill
 
+## 0.1.1
+
+### Patch Changes
+
+-   Fix base64fromByteArray call on Buffer.js
+
 ## 0.1.0
 
 ### Minor Changes
