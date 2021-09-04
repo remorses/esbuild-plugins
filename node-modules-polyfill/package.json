@@ -19,6 +19,7 @@
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "devDependencies": {
+        "safe-buffer": "^5.2.1",
         "test-support": "*"
     },
     "dependencies": {

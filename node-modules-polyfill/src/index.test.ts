@@ -1,5 +1,6 @@
 import { build } from 'esbuild'
 import { writeFiles } from 'test-support'
+import fs from 'fs'
 import NodeModulesPolyfillsPlugin from '.'
 
 require('debug').enable(require('../package.json').name)
@@ -25,6 +26,36 @@ test('works', async () => {
     // console.log(res.outputFiles[0].text)
     unlink()
 })
+
+test('works with SafeBuffer and other package consumers', async () => {
+    const {
+        unlink,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `import {Buffer as SafeBuffer} from './safe-buffer'; console.log(SafeBuffer);`,
+        'safe-buffer.ts': fs
+            .readFileSync(require.resolve('safe-buffer'))
+            .toString(),
+    })
+    // const outfile = randomOutputFile()
+    const res = await build({
+        entryPoints: [ENTRY],
+        write: false,
+        format: 'esm',
+        target: 'es2017',
+        bundle: true,
+        plugins: [NodeModulesPolyfillsPlugin()],
+    })
+    // console.log(
+    //     res.outputFiles[0].text
+    //         .split('\n')
+    //         .map((x, i) => i + ' ' + x)
+    //         .join('\n'),
+    // )
+    eval(res.outputFiles[0].text)
+    unlink()
+})
+
 test('events works', async () => {
     const {
         unlink,

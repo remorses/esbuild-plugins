@@ -99,21 +99,23 @@ export function NodeModulesPolyfillPlugin(
     }
 }
 
+
 function commonJsTemplate({ importPath }) {
     return `
 const polyfill = require('${importPath}')
 
 if (polyfill && polyfill.default) {
     module.exports = polyfill.default
+    if (polyfill) {
+        for (let k in polyfill) {
+            module.exports[k] = polyfill[k]
+        }
+    }
 } else if (polyfill)  {
     module.exports = polyfill
 }
 
-if (polyfill) {
-    for (let k in polyfill) {
-        module.exports[k] = polyfill[k]
-    }
-}
+
 `
 }
 
