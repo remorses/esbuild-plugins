@@ -1069,9 +1069,9 @@ Buffer.prototype.toJSON = function toJSON() {
 
 function base64Slice(buf, start, end) {
     if (start === 0 && end === buf.length) {
-        return fromByteArray(buf)
+        return base64fromByteArray(buf)
     } else {
-        return fromByteArray(buf.slice(start, end))
+        return base64fromByteArray(buf.slice(start, end))
     }
 }
 
