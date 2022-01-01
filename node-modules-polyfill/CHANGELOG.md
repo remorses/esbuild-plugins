@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-modules-polyfill
 
+## 0.1.4
+
+### Patch Changes
+
+-   ff5577a: Using globalThis to define global in node modules polyfills
+
 ## 0.1.3
 
 ### Patch Changes
