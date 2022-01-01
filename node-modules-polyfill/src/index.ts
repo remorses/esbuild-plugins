@@ -35,7 +35,14 @@ export function NodeModulesPolyfillPlugin(
 
     return {
         name,
-        setup: function setup({ onLoad, onResolve }) {
+        setup: function setup({ onLoad, onResolve, initialOptions }) {
+            // polyfills contain global keyword, it must be defined
+            if (initialOptions?.define && !initialOptions.define?.global) {
+                initialOptions.define['global'] = '{}'
+            } else if (!initialOptions?.define) {
+                initialOptions.define = { global: '{}' }
+            }
+
             // TODO these polyfill module cannot import anything, is that ok?
             async function loader(
                 args: esbuild.OnLoadArgs,

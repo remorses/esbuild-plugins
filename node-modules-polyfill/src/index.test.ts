@@ -149,3 +149,28 @@ test.skip('fs', async () => {
     // console.log(res.outputFiles[0].text)
     unlink()
 })
+
+test('does not include global keyword', async () => {
+    const {
+        unlink,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `import {x} from './utils'; console.log(x);`,
+        'utils.ts': `import path from 'path'; import { Buffer } from 'buffer'; export const x = path.resolve(Buffer.from('x').toString());`,
+    })
+    // const outfile = randomOutputFile()
+    const res = await build({
+        entryPoints: [ENTRY],
+        write: false,
+        format: 'esm',
+        target: 'es2017',
+        bundle: true,
+        plugins: [NodeModulesPolyfillsPlugin()],
+    })
+    const text = res.outputFiles[0].text
+    eval(text)
+    console.log(text)
+    expect(text).not.toContain(/\bglobal\b/)
+    // console.log(res.outputFiles[0].text)
+    unlink()
+})
