@@ -2,6 +2,7 @@ import { build } from 'esbuild'
 import { writeFiles } from 'test-support'
 import fs from 'fs'
 import NodeModulesPolyfillsPlugin from '.'
+import NodeGlobalsPolyfillsPlugin from '@esbuild-plugins/node-globals-polyfill'
 
 require('debug').enable(require('../package.json').name)
 
@@ -169,8 +170,31 @@ test('does not include global keyword', async () => {
     })
     const text = res.outputFiles[0].text
     eval(text)
-    console.log(text)
     expect(text).not.toContain(/\bglobal\b/)
+    // console.log(res.outputFiles[0].text)
+    unlink()
+})
+
+test('works with globals polyfills', async () => {
+    const {
+        unlink,
+        paths: [ENTRY],
+    } = await writeFiles({
+        'entry.ts': `import {x} from './utils'; console.log(x);`,
+        'utils.ts': `import path from 'path'; import { Buffer } from 'buffer'; export const x = path.resolve(Buffer.from('x').toString());`,
+    })
+    // const outfile = randomOutputFile()
+    const res = await build({
+        entryPoints: [ENTRY],
+        write: false,
+        format: 'esm',
+        target: 'es2017',
+        bundle: true,
+        plugins: [NodeModulesPolyfillsPlugin(), NodeGlobalsPolyfillsPlugin()],
+    })
+    const text = res.outputFiles[0].text
+    eval(text)
+    console.log(text)
     // console.log(res.outputFiles[0].text)
     unlink()
 })

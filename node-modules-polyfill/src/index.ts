@@ -38,9 +38,9 @@ export function NodeModulesPolyfillPlugin(
         setup: function setup({ onLoad, onResolve, initialOptions }) {
             // polyfills contain global keyword, it must be defined
             if (initialOptions?.define && !initialOptions.define?.global) {
-                initialOptions.define['global'] = '{}'
+                initialOptions.define['global'] = 'globalThis'
             } else if (!initialOptions?.define) {
-                initialOptions.define = { global: '{}' }
+                initialOptions.define = { global: 'globalThis' }
             }
 
             // TODO these polyfill module cannot import anything, is that ok?
