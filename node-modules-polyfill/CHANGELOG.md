@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-modules-polyfill
 
+## 0.1.3
+
+### Patch Changes
+
+-   60e3a4b: removed global identifier from polyfills
+
 ## 0.1.2
 
 ### Patch Changes
