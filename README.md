@@ -4,7 +4,6 @@
     <!-- <img src='' width='320px'> -->
     <br/>
     <h3>Esbuild plugins</h3>
-    <p>project under heavy development</p>
     <br/>
     <br/>
 </div>
@@ -15,7 +14,7 @@
 -   [x] `@esbuild-plugins/esm-externals`
 -   [x] `@esbuild-plugins/node-modules-polyfill`
 -   [x] `@esbuild-plugins/node-globals-polyfill`
--   [x] `@esbuild-plugins/tsconfig-paths`
+-   [ ] `@esbuild-plugins/tsconfig-paths`
 -   [ ] `@esbuild-plugins/html`
 
 ## @esbuild-plugins/node-resolve
@@ -83,3 +82,10 @@ build({
     ],
 })
 ```
+
+## Sponsors
+
+[**Notaku**](https://notaku.website)
+
+
+[![Notaku](https://preview.notaku.website/github_banner.jpg)](https://notaku.website)
