@@ -1,11 +1,9 @@
-import { OnResolveArgs, Plugin } from 'esbuild'
-import escapeStringRegexp from 'escape-string-regexp'
-import fs from 'fs'
-import path from 'path'
+import type { OnResolveArgs, Plugin } from 'esbuild'
 import esbuild from 'esbuild'
-import { builtinsPolyfills } from './polyfills'
+import escapeStringRegexp from 'escape-string-regexp'
+import path from 'path'
+import { getModules as builtinsPolyfills } from 'rollup-plugin-polyfill-node/dist/modules'
 
-// import { NodeResolvePlugin } from '@esbuild-plugins/node-resolve'
 const NAME = 'node-modules-polyfills'
 const NAMESPACE = NAME
 
@@ -51,13 +49,9 @@ export function NodeModulesPolyfillPlugin(
                     const argsPath = args.path.replace(/^node:/, '')
                     const isCommonjs = args.namespace.endsWith('commonjs')
 
-                    const resolved = polyfilledBuiltins.get(
-                        removeEndingSlash(argsPath),
-                    )
-                    const contents = await (
-                        await fs.promises.readFile(resolved)
-                    ).toString()
-                    let resolveDir = path.dirname(resolved)
+                    const key = removeEndingSlash(argsPath)
+                    const contents = polyfilledBuiltins.get(key)
+                    const resolveDir = path.dirname(key)
 
                     if (isCommonjs) {
                         return {
