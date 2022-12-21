@@ -18,13 +18,15 @@ function removeEndingSlash(importee) {
 
 export interface NodePolyfillsOptions {
     name?: string
-    namespace?: string
+    namespace?: string,
+    include?: string[],
+    exclude?: string[]
 }
 
 export function NodeModulesPolyfillPlugin(
     options: NodePolyfillsOptions = {},
 ): Plugin {
-    const { namespace = NAMESPACE, name = NAME } = options
+    const { namespace = NAMESPACE, name = NAME, include = [], exclude = [] } = options
     if (namespace.endsWith('commonjs')) {
         throw new Error(`namespace ${namespace} must not end with commonjs`)
     }
@@ -80,11 +82,13 @@ export function NodeModulesPolyfillPlugin(
                     }
                 }
             }
-            onLoad({ filter: /.*/, namespace }, loader)
-            onLoad({ filter: /.*/, namespace: commonjsNamespace }, loader)
             const filter = new RegExp(
-                polyfilledBuiltinsNames.map(escapeStringRegexp).join('|'), // TODO builtins could end with slash, keep in mind in regex
+                (polyfilledBuiltinsNames.map(escapeStringRegexp) as string[])
+                					   .filter((value: string) => include.length ? include.includes(value) : exclude.length ? !exclude.includes(value) : true)
+                					   .join('|'), // TODO builtins could end with slash, keep in mind in regex
             )
+            onLoad({ filter, namespace }, loader)
+            onLoad({ filter, namespace: commonjsNamespace }, loader)
             async function resolver(args: OnResolveArgs) {
                 const ignoreRequire = args.namespace === commonjsNamespace
 
