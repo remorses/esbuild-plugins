@@ -58,10 +58,10 @@ build({
 Polyfills nodejs builtin modules for the browser
 
 ```ts
-import NodeModulesPolyfills from '@esbuild-plugins/node-modules-polyfill'
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
 import { build } from 'esbuild'
 build({
-    plugins: [NodeModulesPolyfills()],
+    plugins: [NodeModulesPolyfillPlugin()],
 })
 ```
 
@@ -70,11 +70,11 @@ build({
 Polyfills nodejs globals like `process`
 
 ```ts
-import GlobalsPolyfills from '@esbuild-plugins/node-globals-polyfill'
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 import { build } from 'esbuild'
 build({
     plugins: [
-        GlobalsPolyfills({
+        NodeGlobalsPolyfillPlugin({
             process: true,
             buffer: true,
             define: { 'process.env.var': '"hello"' }, // inject will override define, to keep env vars you must also pass define here https://github.com/evanw/esbuild/issues/660
