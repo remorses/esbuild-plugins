@@ -48,10 +48,11 @@ export function NodeModulesPolyfillPlugin(
                 args: esbuild.OnLoadArgs,
             ): Promise<esbuild.OnLoadResult> {
                 try {
+                    const argsPath = args.path.replace(/^node:/, '')
                     const isCommonjs = args.namespace.endsWith('commonjs')
 
                     const resolved = polyfilledBuiltins.get(
-                        removeEndingSlash(args.path),
+                        removeEndingSlash(argsPath),
                     )
                     const contents = await (
                         await fs.promises.readFile(resolved)
@@ -62,7 +63,7 @@ export function NodeModulesPolyfillPlugin(
                         return {
                             loader: 'js',
                             contents: commonJsTemplate({
-                                importPath: args.path,
+                                importPath: argsPath,
                             }),
                             resolveDir,
                         }
@@ -83,12 +84,18 @@ export function NodeModulesPolyfillPlugin(
             onLoad({ filter: /.*/, namespace }, loader)
             onLoad({ filter: /.*/, namespace: commonjsNamespace }, loader)
             const filter = new RegExp(
-                polyfilledBuiltinsNames.map(escapeStringRegexp).join('|'), // TODO builtins could end with slash, keep in mind in regex
+                [
+                    ...polyfilledBuiltinsNames,
+                    ...polyfilledBuiltinsNames.map((n) => `node:${n}`),
+                ]
+                    .map(escapeStringRegexp)
+                    .join('|'), // TODO builtins could end with slash, keep in mind in regex
             )
             async function resolver(args: OnResolveArgs) {
+                const argsPath = args.path.replace(/^node:/, '')
                 const ignoreRequire = args.namespace === commonjsNamespace
 
-                if (!polyfilledBuiltins.has(args.path)) {
+                if (!polyfilledBuiltins.has(argsPath)) {
                     return
                 }
 
@@ -97,7 +104,7 @@ export function NodeModulesPolyfillPlugin(
 
                 return {
                     namespace: isCommonjs ? commonjsNamespace : namespace,
-                    path: args.path,
+                    path: argsPath,
                 }
             }
             onResolve({ filter }, resolver)
