@@ -65,6 +65,8 @@ export function NodeGlobalsPolyfillPlugin({
             }
             if (initialOptions.inject) {
                 initialOptions.inject.push(...polyfills)
+                // handle duplicate plugin
+                initialOptions.inject = [...new Set(initialOptions.inject)]
             } else {
                 initialOptions.inject = [...polyfills]
             }
