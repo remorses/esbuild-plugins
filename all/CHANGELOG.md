@@ -1,5 +1,20 @@
 # @esbuild-plugins/all
 
+## 0.1.0
+
+### Minor Changes
+
+-   66c7bc6: Support for latest esbuild and Vite 4, removed define property from NodeGlobalsPolyfill, replaced node polyfill lib, support for node: buildtin prefix
+
+### Patch Changes
+
+-   Updated dependencies [66c7bc6]
+    -   @esbuild-plugins/esm-externals@0.1.0
+    -   @esbuild-plugins/html@0.1.0
+    -   @esbuild-plugins/node-globals-polyfill@0.2.0
+    -   @esbuild-plugins/node-modules-polyfill@0.2.0
+    -   @esbuild-plugins/node-resolve@0.2.0
+
 ## 0.0.31
 
 ### Patch Changes
