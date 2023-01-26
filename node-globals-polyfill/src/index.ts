@@ -4,7 +4,7 @@ import * as esbuild from 'esbuild'
 
 export function NodeGlobalsPolyfillPlugin({
     buffer = false,
-    define = {},
+    // define = {},
     process = true,
 } = {}): esbuild.Plugin {
     return {
@@ -21,32 +21,36 @@ export function NodeGlobalsPolyfillPlugin({
                 }
             })
 
-            
+            // TODO esbuild cannot use virtual modules for inject: https://github.com/evanw/esbuild/issues/2762
+            // onLoad({ filter: /_virtual-process-polyfill_\.js/ }, (arg) => {
+            //     const data = fs
+            //         .readFileSync(path.resolve(__dirname, '../process.js'))
+            //         .toString()
 
-            onLoad({ filter: /_virtual-process-polyfill_\.js/ }, (arg) => {
-                const data = fs
-                    .readFileSync(path.resolve(__dirname, '../process.js'))
-                    .toString()
-
-                const keys = Object.keys(define)
+            //     const keys = Object.keys(define)
+            //     return {
+            //         loader: 'js',
+            //         contents: data.replace(
+            //             `const defines = {}`,
+            //             'const defines = {\n' +
+            //                 keys
+            //                     .filter((x) => x.startsWith('process.'))
+            //                     .sort((a, b) => a.length - b.length)
+            //                     .map(
+            //                         (k) =>
+            //                             `  ${JSON.stringify(k).replace(
+            //                                 'process.',
+            //                                 '',
+            //                             )}: ${define[k]},`,
+            //                     )
+            //                     .join('\n') +
+            //                 '\n}',
+            //         ),
+            //     }
+            // })
+            onResolve({ filter: /_virtual-process-polyfill_\.js/ }, () => {
                 return {
-                    loader: 'js',
-                    contents: data.replace(
-                        `const defines = {}`,
-                        'const defines = {\n' +
-                            keys
-                                .filter((x) => x.startsWith('process.'))
-                                .sort((a, b) => a.length - b.length)
-                                .map(
-                                    (k) =>
-                                        `  ${JSON.stringify(k).replace(
-                                            'process.',
-                                            '',
-                                        )}: ${define[k]},`,
-                                )
-                                .join('\n') +
-                            '\n}',
-                    ),
+                    path: path.resolve(__dirname, '../process.js'),
                 }
             })
 

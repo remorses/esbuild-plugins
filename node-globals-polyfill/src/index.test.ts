@@ -44,6 +44,8 @@ test('process is tree shaken', async () => {
     expect(output).not.toContain('process')
     unlink()
 })
+
+// TODO esbuild cannot use virtual modules for inject: https://github.com/evanw/esbuild/issues/2762
 test('process env vars are replaced with ones from define', async () => {
     const {
         unlink,
@@ -57,13 +59,10 @@ test('process env vars are replaced with ones from define', async () => {
         format: 'esm',
         target: 'es2017',
         bundle: true,
-        plugins: [
-            NodeGlobalsPolyfillPlugin({
-                define: {
-                    'process.env.VAR': '"hello"',
-                },
-            }),
-        ],
+        define: {
+            'process.env.VAR': '"hello"',
+        },
+        plugins: [NodeGlobalsPolyfillPlugin({})],
     })
     const output = res.outputFiles[0].text
     eval(output)
