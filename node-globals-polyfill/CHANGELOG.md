@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-globals-polyfill
 
+## 0.2.1
+
+### Patch Changes
+
+-   4af52fa: Handle duplicate globals plugin, fixes #25
+
 ## 0.2.0
 
 ### Minor Changes
