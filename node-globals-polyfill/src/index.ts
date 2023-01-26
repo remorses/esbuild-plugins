@@ -21,6 +21,8 @@ export function NodeGlobalsPolyfillPlugin({
                 }
             })
 
+            
+
             onLoad({ filter: /_virtual-process-polyfill_\.js/ }, (arg) => {
                 const data = fs
                     .readFileSync(path.resolve(__dirname, '../process.js'))
