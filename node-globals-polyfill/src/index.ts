@@ -53,6 +53,11 @@ export function NodeGlobalsPolyfillPlugin({
                     path: path.resolve(__dirname, '../process.js'),
                 }
             })
+            onResolve({ filter: /_virtual-buffer-polyfill_\.js/ }, () => {
+                return {
+                    path: path.resolve(__dirname, '../_buffer.js'),
+                }
+            })
 
             const polyfills: string[] = []
             if (process) {
@@ -61,7 +66,9 @@ export function NodeGlobalsPolyfillPlugin({
                 )
             }
             if (buffer) {
-                polyfills.push(path.resolve(__dirname, '../_buffer.js'))
+                polyfills.push(
+                    path.resolve(__dirname, '../_virtual-buffer-polyfill_.js'),
+                )
             }
             if (initialOptions.inject) {
                 initialOptions.inject.push(...polyfills)
