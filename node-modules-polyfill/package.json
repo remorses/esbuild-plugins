@@ -20,7 +20,8 @@
     "license": "ISC",
     "devDependencies": {
         "safe-buffer": "^5.2.1",
-        "test-support": "*"
+        "test-support": "*",
+        "@esbuild-plugins/node-globals-polyfill": "*"
     },
     "dependencies": {
         "escape-string-regexp": "^4.0.0",
