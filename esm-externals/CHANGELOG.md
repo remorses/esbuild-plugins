@@ -1,5 +1,11 @@
 # @esbuild-plugins/esm-externals
 
+## 0.1.2
+
+### Patch Changes
+
+-   e55946b: Fix Vite marking buffer polyfill as external
+
 ## 0.1.1
 
 ### Patch Changes

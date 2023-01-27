@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-globals-polyfill
 
+## 0.2.3
+
+### Patch Changes
+
+-   e55946b: Fix Vite marking buffer polyfill as external
+
 ## 0.2.2
 
 ### Patch Changes

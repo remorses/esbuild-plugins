@@ -1,5 +1,13 @@
 # @esbuild-plugins/html
 
+## 0.1.2
+
+### Patch Changes
+
+-   e55946b: Fix Vite marking buffer polyfill as external
+-   Updated dependencies [e55946b]
+    -   @esbuild-plugins/node-resolve@0.2.2
+
 ## 0.1.1
 
 ### Patch Changes
