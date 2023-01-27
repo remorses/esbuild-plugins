@@ -1,5 +1,17 @@
 # @esbuild-plugins/all
 
+## 0.1.2
+
+### Patch Changes
+
+-   e8e70c9: Revert polyfill lib change
+-   Updated dependencies [e8e70c9]
+    -   @esbuild-plugins/esm-externals@0.1.1
+    -   @esbuild-plugins/html@0.1.1
+    -   @esbuild-plugins/node-globals-polyfill@0.2.2
+    -   @esbuild-plugins/node-modules-polyfill@0.2.1
+    -   @esbuild-plugins/node-resolve@0.2.1
+
 ## 0.1.1
 
 ### Patch Changes

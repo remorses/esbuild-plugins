@@ -1,5 +1,11 @@
 # @esbuild-plugins/node-resolve
 
+## 0.2.1
+
+### Patch Changes
+
+-   e8e70c9: Revert polyfill lib change
+
 ## 0.2.0
 
 ### Minor Changes

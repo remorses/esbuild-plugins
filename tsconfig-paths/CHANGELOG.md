@@ -1,5 +1,11 @@
 # @esbuild-plugins/tsconfig-paths
 
+## 0.1.1
+
+### Patch Changes
+
+-   e8e70c9: Revert polyfill lib change
+
 ## 0.1.0
 
 ### Minor Changes

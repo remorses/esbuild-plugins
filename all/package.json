@@ -1,6 +1,6 @@
 {
     "name": "@esbuild-plugins/all",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "",
     "main": "dist/index.js",
     "module": "esm/index.js",
@@ -19,11 +19,11 @@
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "dependencies": {
-        "@esbuild-plugins/node-resolve": "0.2.0",
-        "@esbuild-plugins/html": "0.1.0",
-        "@esbuild-plugins/esm-externals": "0.1.0",
-        "@esbuild-plugins/node-modules-polyfill": "0.2.0",
-        "@esbuild-plugins/node-globals-polyfill": "0.2.1"
+        "@esbuild-plugins/node-resolve": "0.2.1",
+        "@esbuild-plugins/html": "0.1.1",
+        "@esbuild-plugins/esm-externals": "0.1.1",
+        "@esbuild-plugins/node-modules-polyfill": "0.2.1",
+        "@esbuild-plugins/node-globals-polyfill": "0.2.2"
     },
     "peerDependencies": {
         "esbuild": "*"
