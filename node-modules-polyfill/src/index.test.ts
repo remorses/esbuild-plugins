@@ -12,7 +12,19 @@ test('works', async () => {
         paths: [ENTRY],
     } = await writeFiles({
         'entry.ts': `import {x} from './utils'; console.log(x);`,
-        'utils.ts': `import path from 'path'; import { Buffer } from 'buffer'; export const x = path.resolve(Buffer.from('x').toString());`,
+        'utils.ts': `
+import path from 'path';
+import { Buffer } from 'buffer';
+import { Writable } from 'stream';
+import { request } from 'http';
+
+export const x =  new Writable({
+  write() {
+    const path = path.resolve(Buffer.from('x').toString());
+    const call = request(path)
+  }
+});
+`,
     })
     // const outfile = randomOutputFile()
     const res = await build({
@@ -23,8 +35,8 @@ test('works', async () => {
         bundle: true,
         plugins: [NodeModulesPolyfillsPlugin()],
     })
-    eval(res.outputFiles[0].text)
-    // console.log(res.outputFiles[0].text)
+    //eval(res.outputFiles[0].text) -- need jsdom or equiv for globalThis.XMLHttpRequest
+    console.log(res.outputFiles[0].text)
     unlink()
 })
 

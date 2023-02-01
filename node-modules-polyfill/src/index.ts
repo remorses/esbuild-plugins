@@ -3,6 +3,7 @@ import esbuild from 'esbuild'
 import escapeStringRegexp from 'escape-string-regexp'
 import path from 'path'
 import { getModules as builtinsPolyfills } from 'rollup-plugin-polyfill-node/dist/modules'
+import polyfills from 'rollup-plugin-polyfill-node/dist/polyfills'
 
 const NAME = 'node-modules-polyfills'
 const NAMESPACE = NAME
@@ -50,7 +51,8 @@ export function NodeModulesPolyfillPlugin(
                     const isCommonjs = args.namespace.endsWith('commonjs')
 
                     const key = removeEndingSlash(argsPath)
-                    const contents = polyfilledBuiltins.get(key)
+                    const contents =
+                        polyfilledBuiltins.get(key) || polyfills[`${key}.js`]
                     const resolveDir = path.dirname(key)
 
                     if (isCommonjs) {
@@ -85,6 +87,33 @@ export function NodeModulesPolyfillPlugin(
                     .map(escapeStringRegexp)
                     .join('|'), // TODO builtins could end with slash, keep in mind in regex
             )
+
+            const prefixFilter = new RegExp(`^.*\0polyfill-node\.`)
+            onResolve({ filter: prefixFilter }, (args) => {
+                const path = args.path.replace(prefixFilter, '')
+                const isCommonjs =
+                    args.namespace !== commonjsNamespace &&
+                    args.kind === 'require-call'
+
+                return {
+                    namespace: isCommonjs ? commonjsNamespace : namespace,
+                    path,
+                }
+            })
+            const localResolver = (args: OnResolveArgs) => {
+                return {
+                    namespace: args.namespace,
+                    path: `${path.basename(
+                        args.resolveDir,
+                    )}/${args.path.replace('./', '')}`,
+                }
+            }
+            onResolve({ filter: /\.\//, namespace }, localResolver)
+            onResolve(
+                { filter: /\.\//, namespace: commonjsNamespace },
+                localResolver,
+            )
+
             async function resolver(args: OnResolveArgs) {
                 const argsPath = args.path.replace(/^node:/, '')
                 const ignoreRequire = args.namespace === commonjsNamespace
