@@ -2,11 +2,11 @@ import escapeStringRegexp from 'escape-string-regexp'
 const NAME = 'esm-externals'
 const NAMESPACE = NAME
 
-export function EsmExternalsPlugin({ externals }: { externals: string[] }) {
+export function EsmExternalsPlugin({ externals, filter: customFilter  }: { externals: string[], filter?: RegExp | string }) {
     return {
         name: NAME,
         setup(build) {
-            const filter = makeFilter(externals)
+            const filter = typeof customFilter != "undefined" ? customFilter : makeFilter(externals)
             build.onResolve({ filter: /.*/, namespace: NAMESPACE }, (args) => {
                 return {
                     path: args.path,
