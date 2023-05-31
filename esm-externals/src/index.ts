@@ -6,7 +6,7 @@ export function EsmExternalsPlugin({ externals }: { externals: string[] | RegExp
     return {
         name: NAME,
         setup(build) {
-            const filter = Array.isArray(externals) ? makeFilter(externals ) : externals;
+            const filter = Array.isArray(externals) ? makeFilter(externals) : externals;
 
             build.onResolve({ filter: /.*/, namespace: NAMESPACE }, (args) => {
                 return {
