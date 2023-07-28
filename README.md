@@ -14,8 +14,6 @@
 -   [x] `@esbuild-plugins/esm-externals`
 -   [x] `@esbuild-plugins/node-modules-polyfill` (out of date, use [esbuild-plugin-polyfill-node](https://github.com/cyco130/esbuild-plugin-polyfill-node) for up to date polyfills)
 -   [x] `@esbuild-plugins/node-globals-polyfill` (out of date, use [esbuild-plugin-polyfill-node](https://github.com/cyco130/esbuild-plugin-polyfill-node) for up to date polyfills)
--   [ ] `@esbuild-plugins/tsconfig-paths`
--   [ ] `@esbuild-plugins/html`
 
 ## @esbuild-plugins/node-resolve
 
