@@ -81,9 +81,9 @@ build({
 })
 ```
 
+
 ## Sponsors
 
-[**Notaku**](https://notaku.website)
+[**Holocron**](https://holocron.so#github-esbuild-plugins)
 
-
-[![Notaku](https://preview.notaku.website/github_banner.jpg)](https://notaku.website)
+[![Holocron](https://holocron.so/banners/github.png)](https://holocron.so#github-esbuild-plugins)
