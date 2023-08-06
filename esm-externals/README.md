@@ -9,3 +9,18 @@ build({
     plugins: [EsmExternals({ externals: ['react', 'react-dom'] })],
 })
 ```
+
+If you would like to customize the filter for externals, you can pass a RegExp or a string to the externals option.
+
+```ts
+
+import EsmExternals from '@esbuild-plugins/esm-externals'
+import { build } from 'esbuild'
+
+const externalRegExp = new RegExp("^(" + ["react", "react-dom"].join("|") + ")$")
+// this will make all react and react-dom packages externals, but not react/abc or react-dom/abc
+
+build({
+    plugins: [EsmExternals({ externals: externalRegExp })],
+})
+```
